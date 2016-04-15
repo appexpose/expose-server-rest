@@ -554,7 +554,7 @@ app.put('/users/:userKey/account',function(req,res){
           res.status(500).jsonp(response);
           console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
         }else{
-          if(rowsCount==0){
+          if(rowsCount==1){
             var response={
               "code":"userkey_not_valid",
               "message":"The userKey is not valid our you are Unauthorized."
@@ -607,7 +607,7 @@ app.delete('/users/:userKey',function(req,res){
         res.status(500).jsonp(response);
         console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
       }else{
-        if(rowsCount==0){
+        if(rowsCount==1){
           var response={
             "code":"userkey_not_valid",
             "message":"The userKey is not valid our you are Unauthorized."
@@ -740,7 +740,7 @@ app.delete('/users/:userKey/contacts/',function(req,res){
         res.status(500).jsonp(response);
         console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
       }else{
-        if(rowsCount==0){
+        if(rowsCount==1){
           var response={
             "code":"userkey_not_valid_or_not_contacts",
             "message":"The userKey is not valid our you there is not contacts."
@@ -841,7 +841,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
           res.status(500).jsonp(response);
           console.log("[Update Contact] Error "+response.code+" "+response.message+" ("+err+")");
         }else{
-          if(rowsCount==0){
+          if(rowsCount==1){
             var response={
               "code":"userkey_or_phone_not_valid",
               "message":"The userKey or phone is not valid our you are Unauthorized."
@@ -893,7 +893,7 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
         res.status(500).jsonp(response);
         console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
       }else{
-        if(rowsCount==0){
+        if(rowsCount==1){
           var response={
             "code":"userkey_or_phone_not_valid",
             "message":"The userKey or phone is not valid our you are Unauthorized."
@@ -1093,7 +1093,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
 
     } else {
 
-      if(rowsCount==0){
+      if(rowsCount==1){
         var response={
           "code":"commentkey_or_phone_not_valid",
           "message":"The commentKey or phone is not valid."
