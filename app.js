@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 
 var server = require('http').createServer(app);
 
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 
 var sha1 = require('sha1');
 
@@ -1050,7 +1050,12 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
 
 
 function mssql_escape (str) {
-  return str.replace(/'/g, "''");
+  if(!((typeof str == 'undefined')||(str==''))){
+    return str.replace(/'/g, "''");
+  }else{
+    return str;
+  }
+
 }
 
 
