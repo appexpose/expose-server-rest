@@ -205,7 +205,7 @@ app.get('/tables',function(req,res){
 // List Users
 //
 
-app.get('/admin/:adminApiKey/users',function(req,res){
+app.get('/admins/:adminApiKey/users',function(req,res){
   console.log("[Admin - List Users] START");
 
   var timestamp = new Date().getTime();
@@ -246,7 +246,7 @@ app.get('/admin/:adminApiKey/users',function(req,res){
 // List UserContacts
 //
 
-app.get('/admin/:adminApiKey/users/contacts',function(req,res){
+app.get('/admins/:adminApiKey/users/contacts',function(req,res){
   console.log("[Admin - List User Contacts] START");
 
   var timestamp = new Date().getTime();
@@ -283,7 +283,7 @@ app.get('/admin/:adminApiKey/users/contacts',function(req,res){
 // List Comments
 //
 
-app.get('/admin/:adminApiKey/users/comments',function(req,res){
+app.get('/admins/:adminApiKey/users/comments',function(req,res){
   console.log("[Admin - List User Comments] START");
 
   var timestamp = new Date().getTime();
@@ -317,7 +317,7 @@ app.get('/admin/:adminApiKey/users/comments',function(req,res){
 });
 
 
-app.get('/admin/:adminApiKey/log',function(req,res){
+app.get('/admins/:adminApiKey/log',function(req,res){
   console.log("[Admin - List Log] START");
 
   var timestamp = new Date().getTime();
