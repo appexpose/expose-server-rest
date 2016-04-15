@@ -505,7 +505,7 @@ app.get('/stats',function(req,res){
 
       }else{
         var response={
-          "stats":rows
+          "stats":rows[0]
         };
 
         console.log("[Get Stats] Success");
