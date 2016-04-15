@@ -355,6 +355,168 @@ app.get('/admins/:adminApiKey/log',function(req,res){
 });
 
 
+
+
+
+app.get('/stats',function(req,res){
+  console.log("[Get Stats] START");
+
+  var timestamp = new Date().getTime();
+  timestamp = Math.floor(timestamp / 1000);
+
+  var query = "";
+  query += "SELECT ";
+
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*29))+") AS users_0,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*28))+") AS users_1,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*27))+") AS users_2,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*26))+") AS users_3,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*25))+") AS users_4,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*24))+") AS users_5,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*23))+") AS users_6,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*22))+") AS users_7,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*21))+") AS users_8,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*20))+") AS users_9,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*19))+") AS users_10,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*18))+") AS users_11,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*17))+") AS users_12,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*16))+") AS users_13,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*15))+") AS users_14,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*14))+") AS users_15,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*13))+") AS users_16,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*12))+") AS users_17,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*11))+") AS users_18,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*10))+") AS users_19,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*9))+") AS users_20,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*8))+") AS users_21,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*7))+") AS users_22,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*6))+") AS users_23,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*5))+") AS users_24,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*4))+") AS users_25,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*3))+") AS users_26,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*2))+") AS users_27,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*1))+") AS users_28,";
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+(timestamp-(86400*0))+") AS users_29,";
+
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*29))+") AS comments_0,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*28))+") AS comments_1,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*27))+") AS comments_2,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*26))+") AS comments_3,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*25))+") AS comments_4,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*24))+") AS comments_5,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*23))+") AS comments_6,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*22))+") AS comments_7,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*21))+") AS comments_8,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*20))+") AS comments_9,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*19))+") AS comments_10,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*18))+") AS comments_11,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*17))+") AS comments_12,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*16))+") AS comments_13,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*15))+") AS comments_14,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*14))+") AS comments_15,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*13))+") AS comments_16,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*12))+") AS comments_17,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*11))+") AS comments_18,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*10))+") AS comments_19,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*9))+") AS comments_20,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*8))+") AS comments_21,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*7))+") AS comments_22,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*6))+") AS comments_23,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*5))+") AS comments_24,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*4))+") AS comments_25,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*3))+") AS comments_26,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*2))+") AS comments_27,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*1))+") AS comments_28,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+(timestamp-(86400*0))+") AS comments_29,";
+
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*29))+") AS active_users_0,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*28))+") AS active_users_1,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*27))+") AS active_users_2,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*26))+") AS active_users_3,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*25))+") AS active_users_4,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*24))+") AS active_users_5,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*23))+") AS active_users_6,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*22))+") AS active_users_7,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*21))+") AS active_users_8,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*20))+") AS active_users_9,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*19))+") AS active_users_10,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*18))+") AS active_users_11,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*17))+") AS active_users_12,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*16))+") AS active_users_13,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*15))+") AS active_users_14,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*14))+") AS active_users_15,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*13))+") AS active_users_16,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*12))+") AS active_users_17,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*11))+") AS active_users_18,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*10))+") AS active_users_19,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*9))+") AS active_users_20,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*8))+") AS active_users_21,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*7))+") AS active_users_22,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*6))+") AS active_users_23,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*5))+") AS active_users_24,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*4))+") AS active_users_25,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*3))+") AS active_users_26,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*2))+") AS active_users_27,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*1))+") AS active_users_28,";
+  query += "(SELECT COUNT(ID) FROM users WHERE lastConnection<"+(timestamp-(86400*0))+") AS active_users_29,";
+
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*29))+") AS searchs_0,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*28))+") AS searchs_1,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*27))+") AS searchs_2,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*26))+") AS searchs_3,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*25))+") AS searchs_4,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*24))+") AS searchs_5,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*23))+") AS searchs_6,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*22))+") AS searchs_7,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*21))+") AS searchs_8,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*20))+") AS searchs_9,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*19))+") AS searchs_10,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*18))+") AS searchs_11,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*17))+") AS searchs_12,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*16))+") AS searchs_13,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*15))+") AS searchs_14,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*14))+") AS searchs_15,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*13))+") AS searchs_16,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*12))+") AS searchs_17,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*11))+") AS searchs_18,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*10))+") AS searchs_19,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*9))+") AS searchs_20,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*8))+") AS searchs_21,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*7))+") AS searchs_22,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*6))+") AS searchs_23,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*5))+") AS searchs_24,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*4))+") AS searchs_25,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*3))+") AS searchs_26,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*2))+") AS searchs_27,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*1))+") AS searchs_28,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created<"+(timestamp-(86400*0))+") AS searchs_29";
+
+  var rows=[];
+  console.log(query);
+  connection.execSql(new Request(query, function(err) {
+      if (err) {
+        var response={
+          "code":"db_exception",
+          "message":"An internal error has occured on our server."
+        };
+        res.status(500).jsonp(response);
+        console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
+
+      }else{
+        var response={
+          "stats":rows
+        };
+
+        console.log("[Get Stats] Success");
+        res.status(200).jsonp(response);
+      }
+    })
+    .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
+  );
+
+});
+
+
 //
 // USERS
 //
@@ -1027,7 +1189,6 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
       }
     }));
   }
-
 
 });
 
