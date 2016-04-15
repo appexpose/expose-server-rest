@@ -1004,7 +1004,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
     if((typeof req.body.parentKey == 'undefined')||(req.body.parentKey=='')){comment.parentKey="";}
 
     var query = "";
-    query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','addUserContact',"+timestamp+");";
+    query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','addUserComment',"+timestamp+");";
     query += "INSERT INTO userComments (commentKey,parentKey,userKey,phone,rating,content,reported,created) VALUES";
     query += " ('"+comment.commentKey+"', '"+comment.parentKey+"', '"+comment.userKey+"', '"+comment.phone+"', '"+comment.rating+"', '"+comment.content+"', '"+comment.reported+"', "+comment.created+")";
     console.log(query);
