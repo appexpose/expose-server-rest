@@ -144,6 +144,18 @@ app.get('/tables',function(req,res){
   query += "INSERT INTO users (deviceKey,userKey,fullName,prefix,phone,system,version,created,lastConnection) VALUES ('3','3','Usuario tres','0034','0034000000003','ios','1.0',10002,10012);";
   query += "INSERT INTO users (deviceKey,userKey,fullName,prefix,phone,system,version,created,lastConnection) VALUES ('4','4','Usuario cuatro','0034','0034000000004','ios','1.0',10003,10013);";
   query += "";
+  query += "DROP TABLE IF EXISTS log;";
+  query += "";
+  query += "CREATE TABLE log";
+  query += "(";
+  query += "ID int IDENTITY(1,1) PRIMARY KEY,";
+  query += "userKey varchar(255) NOT NULL,";
+  query += "action varchar(255) NOT NULL,";
+  query += "created int NOT NULL";
+  query += ");";
+  query += "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('1','login',10010);";
+  query += "";
   query += "DROP TABLE IF EXISTS admins;";
   query += "";
   query += "CREATE TABLE admins";
@@ -350,7 +362,9 @@ app.post('/users',function(req,res){
     if((typeof req.body.fullName == 'undefined')||(req.body.fullName=='')){user.fullName="";}
     if((typeof req.body.phone == 'undefined')||(req.body.phone=='')){user.phone="";}
 
-    var query = "INSERT INTO users (deviceKey,userKey,fullName,prefix,phone,system,version,created,lastConnection) VALUES";
+    var query = "";
+    query += "INSERT INTO log (userKey,action,created) VALUES ('"+user.userKey+"','signup',"+timestamp+");";
+    query += "INSERT INTO users (deviceKey,userKey,fullName,prefix,phone,system,version,created,lastConnection) VALUES";
     query += " ('"+user.deviceKey+"', '"+user.userKey+"', '"+user.fullName+"', '"+user.prefix+"', '"+user.phone+"', '"+user.system+"', '"+user.version+"', "+user.created+", "+user.lastConnection+")";
     console.log(query);
 
@@ -377,7 +391,9 @@ app.put('/users/:userKey/login',function(req,res){
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "UPDATE users SET lastConnection = "+timestamp+" WHERE userKey='"+req.params.userKey+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','login',"+timestamp+");";
+  query += "UPDATE users SET lastConnection = "+timestamp+" WHERE userKey='"+req.params.userKey+"'";
   console.log(query);
 
   connection.execSql(new Request(query, function(err,rowsCount) {
@@ -417,7 +433,9 @@ app.get('/users/:userKey/account',function(req,res){
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "SELECT * FROM users WHERE userKey='"+req.params.userKey+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getAccount',"+timestamp+");";
+  query += "SELECT * FROM users WHERE userKey='"+req.params.userKey+"'";
   var rows=[];
   console.log(query);
   connection.execSql(new Request(query, function(err) {
@@ -442,7 +460,9 @@ app.put('/users/:userKey/account',function(req,res){
   console.log("[Update Account] START");
 
   var user={};
-  var query = "UPDATE users SET ";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','updateAccount',"+timestamp+");";
+  query += "UPDATE users SET ";
   var data_to_update=false;
   var coma=" ";
 
@@ -536,6 +556,7 @@ app.delete('/users/:userKey',function(req,res){
   timestamp = Math.floor(timestamp / 1000);
 
   var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteAccount',"+timestamp+");";
   query += "DELETE FROM users WHERE userKey='"+req.params.userKey+"';";
   query += "DELETE FROM userContacts WHERE userKey='"+req.params.userKey+"';";
   var rows=[];
@@ -604,6 +625,7 @@ app.post('/users/:userKey/contacts',function(req,res){
     if((typeof req.body.notify == 'undefined')||(req.body.notify=='')){contact.notify=1;}
 
     var query = "";
+    query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','addUserContact',"+timestamp+");";
     query += "DELETE FROM userContacts WHERE phone='"+contact.phone+"' AND userKey='"+contact.userKey+"';";
     query += "INSERT INTO userContacts (userKey,fullName,phone,notify) VALUES";
     query += " ('"+contact.userKey+"', '"+contact.fullName+"', '"+contact.phone+"', "+contact.notify+");";
@@ -635,7 +657,9 @@ app.get('/users/:userKey/contacts',function(req,res){
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "SELECT * FROM userContacts WHERE userKey='"+req.params.userKey+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserContacts',"+timestamp+");";
+  query += "SELECT * FROM userContacts WHERE userKey='"+req.params.userKey+"'";
   var rows=[];
   console.log(query);
   connection.execSql(new Request(query, function(err) {
@@ -665,7 +689,9 @@ app.delete('/users/:userKey/contacts/',function(req,res){
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "DELETE FROM userContacts WHERE userKey='"+req.params.userKey+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteUserContacts',"+timestamp+");";
+  query += "DELETE FROM userContacts WHERE userKey='"+req.params.userKey+"'";
   var rows=[];
   console.log(query);
   connection.execSql(new Request(query, function(err,rowsCount) {
@@ -706,7 +732,7 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
   timestamp = Math.floor(timestamp / 1000);
 
   var query = "";
-
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getUserContact',"+timestamp+");";
   query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
   query += "FROM userContacts ";
   query += "INNER JOIN userComments ";
@@ -746,7 +772,9 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
   console.log("[Update Contact] START");
 
   var contact={};
-  var query = "UPDATE userContacts SET ";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','updateUserContact',"+timestamp+");";
+  query += "UPDATE userContacts SET ";
   var data_to_update=false;
   var coma=" ";
 
@@ -814,7 +842,9 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "DELETE FROM userContacts WHERE phone='"+req.params.phone+"' AND userKey='"+req.params.userKey+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteUserContact',"+timestamp+");";
+  query += "DELETE FROM userContacts WHERE phone='"+req.params.phone+"' AND userKey='"+req.params.userKey+"'";
   var rows=[];
   console.log(query);
   connection.execSql(new Request(query, function(err,rowsCount) {
@@ -855,7 +885,9 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "SELECT * FROM userComments WHERE phone='"+req.params.phone+"' ORDER BY created DESC";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
+  query += "SELECT * FROM userComments WHERE phone='"+req.params.phone+"' ORDER BY created DESC";
 
   if(!((typeof req.query.limit == 'undefined')||(req.query.limit==''))){
     limit=req.query.limit;
@@ -934,7 +966,9 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
 
     if((typeof req.body.parentKey == 'undefined')||(req.body.parentKey=='')){comment.parentKey="";}
 
-    var query = "INSERT INTO userComments (commentKey,parentKey,userKey,phone,rating,content,reported,created) VALUES";
+    var query = "";
+    query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','addUserContact',"+timestamp+");";
+    query += "INSERT INTO userComments (commentKey,parentKey,userKey,phone,rating,content,reported,created) VALUES";
     query += " ('"+comment.commentKey+"', '"+comment.parentKey+"', '"+comment.userKey+"', '"+comment.phone+"', '"+comment.rating+"', '"+comment.content+"', '"+comment.reported+"', "+comment.created+")";
     console.log(query);
 
@@ -968,7 +1002,9 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "SELECT * FROM userComments WHERE commentKey='"+req.params.commentKey+"' AND phone='"+req.params.phone+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getUserComments',"+timestamp+");";
+  query += "SELECT * FROM userComments WHERE commentKey='"+req.params.commentKey+"' AND phone='"+req.params.phone+"'";
   var rows=[];
   console.log(query);
   connection.execSql(new Request(query, function(err) {
@@ -1004,7 +1040,9 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
 
-  var query = "UPDATE userComments SET reported = 1 WHERE commentKey='"+req.params.commentKey+"'";
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','reportUserComment',"+timestamp+");";
+  query += "UPDATE userComments SET reported = 1 WHERE commentKey='"+req.params.commentKey+"'";
   console.log(query);
 
   connection.execSql(new Request(query, function(err,rowsCount) {
