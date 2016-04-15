@@ -335,9 +335,9 @@ app.post('/users',function(req,res){
 
   }else{
     var user={
-      "deviceKey":req.body.deviceKey,
+      "deviceKey":mssql_escape(req.body.deviceKey),
       "userKey":sha1("userKey"+rand(0,999999)+req.body.deviceKey+timestamp),
-      "fullName":req.body.fullName,
+      "fullName":mssql_escape(req.body.fullName),
       "prefix":req.body.prefix,
       "phone":req.body.phone,
       "system":req.body.system,
@@ -452,7 +452,7 @@ app.put('/users/:userKey/account',function(req,res){
     coma=",";
   }
   if(!((typeof req.body.fullName == 'undefined')||(req.body.fullName==''))){
-    user.fullName=req.body.fullName;
+    user.fullName=mssql_escape(req.body.fullName);
     query += coma+"fullName='"+user.fullName+"' ";
     data_to_update=true;
     coma=",";
@@ -594,7 +594,7 @@ app.post('/users/:userKey/contacts',function(req,res){
   }else{
     var contact={
       "userKey":req.params.userKey,
-      "fullName":req.body.fullName,
+      "fullName":mssql_escape(req.body.fullName),
       "phone":req.body.phone,
       "notify":req.body.notify
     }
@@ -750,7 +750,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
   var coma=" ";
 
   if(!((typeof req.body.fullName == 'undefined')||(req.body.fullName==''))){
-    user.fullName=req.body.fullName;
+    user.fullName=mssql_escape(req.body.fullName);
     query += coma+"fullName='"+contact.fullName+"' ";
     data_to_update=true;
     coma=",";
@@ -926,7 +926,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
       "userKey":req.params.userKey,
       "phone":req.params.phone,
       "rating":req.body.rating,
-      "content":req.body.content,
+      "content":mssql_escape(req.body.content),
       "reported":0,
       "created":timestamp
     }
