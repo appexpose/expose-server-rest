@@ -317,6 +317,43 @@ app.get('/admin/:adminApiKey/users/comments',function(req,res){
 });
 
 
+app.get('/admin/:adminApiKey/log',function(req,res){
+  console.log("[Admin - List Log] START");
+
+  var timestamp = new Date().getTime();
+  timestamp = Math.floor(timestamp / 1000);
+
+  checkAdminApi(req,res,function(err,adminKey){
+    if(!err){
+
+      var query = "SELECT * FROM log";
+      var rows=[];
+      console.log(query);
+      connection.execSql(new Request(query, function(err) {
+          if (err) {
+            var response={
+              "code":"db_exception",
+              "message":"An internal error has occured on our server."
+            };
+            res.status(500).jsonp(response);
+            console.log("[Admin - List Log] Error "+response.code+" "+response.message+" ("+err+")");
+
+          }else{
+            var response={
+              "log":rows
+            };
+
+            console.log("[Admin - List Log] Success");
+            res.status(200).jsonp(response);
+          }
+        })
+        .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
+      );
+
+    }
+  });
+});
+
 
 //
 // USERS
