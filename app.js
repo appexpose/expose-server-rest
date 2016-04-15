@@ -444,7 +444,7 @@ app.put('/users/:userKey/login',function(req,res){
 
     } else {
 
-      if(rowsCount==0){
+      if(rowsCount==1){
         var response={
           "code":"userkey_not_valid",
           "message":"The userKey is not valid."
