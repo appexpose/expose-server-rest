@@ -650,7 +650,7 @@ app.get('/users/:userKey/account',function(req,res){
   query += "SELECT * FROM users WHERE userKey='"+req.params.userKey+"'";
   var rows=[];
   console.log(query);
-  connection.execSql(new Request(query, function(err) {
+  connection.execSql(new Request(query, function(err,rowsCount) {
       if (err) {
         var response={
           "code":"db_exception",
