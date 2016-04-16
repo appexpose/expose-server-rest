@@ -1,27 +1,17 @@
 var version = "1.0.1";
 
 var express = require('express');
-
 var app = express();
-
 var bodyParser = require('body-parser');
-
-
 var server = require('http').createServer(app);
-
 var port = process.env.PORT || 80;
-
 var sha1 = require('sha1');
-
-
 var sql_connection;
 var status={
   "server":"stopped",
   "sql":"not connected",
   "database-server":"converfit.database.windows.net",
 };
-
-
 var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
@@ -30,8 +20,6 @@ var sqlconfig = require('./sql.config');
 
 server.listen(port, function () {});
 
-
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Key");
@@ -39,27 +27,24 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Put these statements before you define any routes.
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
+//
+// Get Version
+//
 app.get('/version',function(req,res){
-
   res.status(200).jsonp(version);
-
 });
 
-
 //
-// Crate Tables
+// Create Tables
 //
 app.get('/tables',function(req,res){
-
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
     if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).send(response);}else{
-
       var query = "";
       query += "DROP TABLE IF EXISTS userComments;";
       query += "";
@@ -172,12 +157,11 @@ app.get('/tables',function(req,res){
           res.status(200).jsonp(response);
         }
       }));
-
     }
   });
-
-
 });
+
+
 
 
 //
