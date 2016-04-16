@@ -268,8 +268,12 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
             console.log("[Admin - List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
+            var response={
+              "contacts":rows
+            };
+
             console.log("[Admin - List User Contacts] Success");
-            res.status(200).jsonp(rows);
+            res.status(200).jsonp(response);
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -305,8 +309,12 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
             console.log("[Admin - List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
+            var response={
+              "comments":rows
+            };
+
             console.log("[Admin - List User Comments] Success");
-            res.status(200).jsonp(rows);
+            res.status(200).jsonp(response);
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -578,7 +586,11 @@ app.post('/users',function(req,res){
         console.log("[Signup] Error "+response.code+" "+response.message+" ("+err+")");
 
       } else {
-        res.status(200).jsonp(user);
+        var response={
+          "user":user
+        };
+
+        res.status(200).jsonp(response);
         console.log("[Signup] Success");
       }
     }));
@@ -648,8 +660,23 @@ app.get('/users/:userKey/account',function(req,res){
         console.log("[Get Account] Error "+response.code+" "+response.message+" ("+err+")");
 
       }else{
-        console.log("[Get Account] Success");
-        res.status(200).jsonp(rows[0]);
+
+        if(rowsCount==1){
+          var response={
+            "code":"userkey_not_valid",
+            "message":"The userKey is not valid."
+          };
+          res.status(400).jsonp(response);
+          console.log("[Login] Error "+response.code+" "+response.message);
+
+        }else{
+          var response={
+            "user":rows[0]
+          };
+
+          console.log("[Get Account] Success");
+          res.status(200).jsonp(rows[0]);
+        }
       }
     })
     .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
