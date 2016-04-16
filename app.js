@@ -255,7 +255,17 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
   checkAdminApi(req,res,function(err,adminKey){
     if(!err){
 
-      var query = "SELECT * FROM userContacts";
+      var query = "";
+      query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
+      query += "FROM userContacts ";
+      query += "INNER JOIN userComments ";
+      query += "ON userComments.phone=userContacts.phone ";
+      query += "GROUP BY";
+      query += " userContacts.ID,";
+      query += " userContacts.userKey,";
+      query += " userContacts.fullName,";
+      query += " userContacts.phone,";
+      query += " userContacts.notify";
       var rows=[];
       console.log(query);
       connection.execSql(new Request(query, function(err) {
@@ -886,7 +896,18 @@ app.get('/users/:userKey/contacts',function(req,res){
 
   var query = "";
   query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserContacts',"+timestamp+");";
-  query += "SELECT * FROM userContacts WHERE userKey='"+req.params.userKey+"'";
+  query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
+  query += "FROM userContacts ";
+  query += "INNER JOIN userComments ";
+  query += "ON userComments.phone=userContacts.phone ";
+  query += "WHERE userContacts.userKey='"+req.params.userKey+"' ";
+  query += "GROUP BY";
+  query += " userContacts.ID,";
+  query += " userContacts.userKey,";
+  query += " userContacts.fullName,";
+  query += " userContacts.phone,";
+  query += " userContacts.notify";
+
   var rows=[];
   console.log(query);
   connection.execSql(new Request(query, function(err) {
@@ -939,8 +960,8 @@ app.delete('/users/:userKey/contacts/',function(req,res){
           console.log("[Delete Account] Error "+response.code+" "+response.message);
         }else{
           var response={
-            "code":"user_deleted",
-            "message":"The user account had been deleted."
+            "code":"contacts_deleted",
+            "message":"The contacts had been deleted."
           };
           res.status(200).send(response);
           console.log("[Delete Account] Success");
@@ -1041,8 +1062,8 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
 
           }else{
             var response={
-              "code":"user_updated",
-              "message":"The user had been updated."
+              "code":"contact_updated",
+              "message":"The contact had been updated."
             };
             res.status(200).jsonp(response);
             console.log("[Update Contact] Success");
@@ -1092,8 +1113,8 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
           console.log("[Delete Account] Error "+response.code+" "+response.message);
         }else{
           var response={
-            "code":"user_deleted",
-            "message":"The user account had been deleted."
+            "code":"contact_deleted",
+            "message":"The contact account had been deleted."
           };
           res.status(200).send(response);
           console.log("[Delete Account] Success");
@@ -1105,6 +1126,56 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
 
 });
 
+
+app.get('/users/:userKey/comments',function(req,res){
+  console.log("[List Contacts Comments] START");
+
+  var timestamp = new Date().getTime();
+  timestamp = Math.floor(timestamp / 1000);
+
+  var query = "";
+  query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
+  query += "SELECT * FROM userComments WHERE phone IN ";
+  query += "(SELECT phone FROM userContacts WHERE userKey='"+req.params.userKey+"') ";
+  query += "ORDER BY created DESC";
+
+  if(!((typeof req.query.limit == 'undefined')||(req.query.limit==''))){
+    limit=req.query.limit;
+    offset=0;
+    if(!((typeof req.query.offset == 'undefined')||(req.query.offset==''))){
+      offset=req.query.offset;
+    }
+    query += " OFFSET "+offset+" ROWS FETCH NEXT "+limit+" ROWS ONLY"
+  }
+
+  var rows=[];
+  console.log(query);
+  connection.execSql(new Request(query, function(err) {
+      if (err) {
+        var response={
+          "code":"db_exception",
+          "message":"An internal error has occured on our server."
+        };
+        res.status(500).jsonp(response);
+        console.log("[List Contacts Comments] Error "+response.code+" "+response.message+" ("+err+")");
+
+      }else{
+        var response={
+          "comments":[]
+        };
+        rows.forEach(function(comment){
+          if(comment.reported){
+            comment.content="";
+          }
+          response.comments.push(comment);
+        });
+        console.log("[List Contacts Comments] Success");
+        res.status(200).jsonp(response);
+      }
+    })
+    .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
+  );
+});
 
 app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
   console.log("[List User Comments] START");
@@ -1233,7 +1304,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
   query += "SELECT * FROM userComments WHERE commentKey='"+req.params.commentKey+"' AND phone='"+req.params.phone+"'";
   var rows=[];
   console.log(query);
-  connection.execSql(new Request(query, function(err) {
+  connection.execSql(new Request(query, function(err,rowsCount) {
       if (err) {
         var response={
           "code":"db_exception",
@@ -1243,17 +1314,27 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
         console.log("[Get User Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
       }else{
-        var response={
-          "comment":[]
-        };
-        comment=rows[0];
-        if(comment.reported){
-          comment.content="";
-        }
-        response.comment.push(comment);
+        if(rowsCount==1){
+          var response={
+            "code":"commentkey_or_phone_not_valid",
+            "message":"The commentKey or phone is not valid."
+          };
+          res.status(400).jsonp(response);
+          console.log("[Report Comment] Error "+response.code+" "+response.message);
 
-        console.log("[Get User Comment] Success");
-        res.status(200).jsonp(response);
+        }else{
+          var response={
+            "comment":[]
+          };
+          comment=rows[0];
+          if(comment.reported){
+            comment.content="";
+          }
+          response.comment.push(comment);
+
+          console.log("[Get User Comment] Success");
+          res.status(200).jsonp(response);
+        }
       }
     })
     .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
