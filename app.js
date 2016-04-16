@@ -571,7 +571,7 @@ app.get('/stats/:timestamp',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")";connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");connection.close();}else{
 
 
       var timestamp = req.params.timestamp;
