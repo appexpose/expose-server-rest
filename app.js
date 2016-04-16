@@ -536,6 +536,45 @@ app.get('/stats',function(req,res){
 });
 
 
+app.get('/stats/:timestamp',function(req,res){
+  console.log("[Get Stats] START");
+
+  var timestamp = req.params.timestamp;
+
+  var query = "";
+  query += "SELECT ";
+
+  query += "(SELECT COUNT(ID) FROM users WHERE created<"+timestamp+") AS users,";
+  query += "(SELECT COUNT(ID) FROM userComments WHERE created<"+timestamp+") AS comments,";
+  query += "(SELECT COUNT(DISTINCT UserKey) FROM log WHERE action LIKE 'login' AND created>"+(timestamp-86400)+" AND created<"+timestamp+" ) AS active_users,";
+  query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created>"+(timestamp-86400)+" AND created<"+timestamp+" ) AS searchs";
+
+  var rows=[];
+  console.log(query);
+  connection.execSql(new Request(query, function(err) {
+      if (err) {
+        var response={
+          "code":"db_exception",
+          "message":"An internal error has occured on our server."
+        };
+        res.status(500).jsonp(response);
+        console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
+
+      }else{
+        var response={
+          "stats":rows[0]
+        };
+
+        console.log("[Get Stats] Success");
+        res.status(200).jsonp(response);
+      }
+    })
+    .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
+  );
+
+});
+
+
 //
 // USERS
 //
