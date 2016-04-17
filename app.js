@@ -141,7 +141,7 @@ app.get('/tables',function(req,res){
       query += "INSERT INTO admins (adminKey,adminApiKey,fullName,email,password,created,lastConnection) VALUES ('1','1','Admin uno','adminuno@appexpose.com','nopassword',10000,10010);";
       query += "";
 
-      //console.log(query);
+      console.log(query);
 
       connection.execSql(new Request(query, function(err) {
         if (err) {
@@ -150,7 +150,7 @@ app.get('/tables',function(req,res){
             "message":"An internal error has occured on our server."
           };
           res.status(500).jsonp(response);connection.close();
-          //console.log(err);
+          console.log(err);
 
         } else {
           var response={
@@ -175,7 +175,7 @@ app.get('/tables',function(req,res){
 // List Users
 //
 app.get('/admins/:adminApiKey/users',function(req,res){
-  //console.log("[Admin - List Users] START");
+  console.log("[Admin - List Users] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -190,7 +190,7 @@ app.get('/admins/:adminApiKey/users',function(req,res){
 
           var query = "SELECT * FROM users";
           var rows=[];
-          //console.log(query);
+          console.log(query);
           connection.execSql(new Request(query, function(err) {
               if (err) {
                 var response={
@@ -198,14 +198,14 @@ app.get('/admins/:adminApiKey/users',function(req,res){
                   "message":"An internal error has occured on our server."
                 };
                 res.status(500).jsonp(response);connection.close();
-                //console.log("[Admin - List Users] Error "+response.code+" "+response.message+" ("+err+")");
+                console.log("[Admin - List Users] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
                 var response={
                   "users":rows
                 };
 
-                //console.log("[Admin - List Users] Success");
+                console.log("[Admin - List Users] Success");
                 res.status(200).jsonp(response);connection.close();
               }
             })
@@ -227,7 +227,7 @@ app.get('/admins/:adminApiKey/users',function(req,res){
 // List UserContacts
 //
 app.get('/admins/:adminApiKey/users/contacts',function(req,res){
-  //console.log("[Admin - List User Contacts] START");
+  console.log("[Admin - List User Contacts] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -240,7 +240,7 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
         if(!err){
 
           var query = "";
-          query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
+          /*query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
           query += "FROM userContacts ";
           query += "INNER JOIN userComments ";
           query += "ON userComments.phone=userContacts.phone ";
@@ -249,9 +249,13 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
           query += " userContacts.userKey,";
           query += " userContacts.fullName,";
           query += " userContacts.phone,";
-          query += " userContacts.notify";
+          query += " userContacts.notify";*/
+
+          query += "SELECT userContacts.*, 0 as rating, 0 as commentsAmount ";
+          query += "FROM userContacts ";
+
           var rows=[];
-          //console.log(query);
+          console.log(query);
           connection.execSql(new Request(query, function(err) {
               if (err) {
                 var response={
@@ -259,14 +263,14 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
                   "message":"An internal error has occured on our server."
                 };
                 res.status(500).jsonp(response);connection.close();
-                //console.log("[Admin - List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
+                console.log("[Admin - List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
                 var response={
                   "contacts":rows
                 };
 
-                //console.log("[Admin - List User Contacts] Success");
+                console.log("[Admin - List User Contacts] Success");
                 res.status(200).jsonp(response);connection.close();
               }
             })
@@ -287,7 +291,7 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
 // List Comments
 //
 app.get('/admins/:adminApiKey/users/comments',function(req,res){
-  //console.log("[Admin - List User Comments] START");
+  console.log("[Admin - List User Comments] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -302,7 +306,7 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
 
           var query = "SELECT * FROM userComments";
           var rows=[];
-          //console.log(query);
+          console.log(query);
           connection.execSql(new Request(query, function(err) {
               if (err) {
                 var response={
@@ -310,14 +314,14 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
                   "message":"An internal error has occured on our server."
                 };
                 res.status(500).jsonp(response);connection.close();
-                //console.log("[Admin - List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
+                console.log("[Admin - List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
                 var response={
                   "comments":rows
                 };
 
-                //console.log("[Admin - List User Comments] Success");
+                console.log("[Admin - List User Comments] Success");
                 res.status(200).jsonp(response);connection.close();
               }
             })
@@ -339,7 +343,7 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
 // List Log
 //
 app.get('/admins/:adminApiKey/log',function(req,res){
-  //console.log("[Admin - List Log] START");
+  console.log("[Admin - List Log] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -355,7 +359,7 @@ app.get('/admins/:adminApiKey/log',function(req,res){
 
           var query = "SELECT * FROM log";
           var rows=[];
-          //console.log(query);
+          console.log(query);
           connection.execSql(new Request(query, function(err) {
               if (err) {
                 var response={
@@ -363,14 +367,14 @@ app.get('/admins/:adminApiKey/log',function(req,res){
                   "message":"An internal error has occured on our server."
                 };
                 res.status(500).jsonp(response);connection.close();
-                //console.log("[Admin - List Log] Error "+response.code+" "+response.message+" ("+err+")");
+                console.log("[Admin - List Log] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
                 var response={
                   "log":rows
                 };
 
-                //console.log("[Admin - List Log] Success");
+                console.log("[Admin - List Log] Success");
                 res.status(200).jsonp(response);connection.close();
               }
             })
@@ -531,7 +535,7 @@ app.get('/stats',function(req,res){
 
 
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err) {
           if (err) {
             var response={
@@ -539,14 +543,14 @@ app.get('/stats',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             var response={
               "stats":rows[0]
             };
 
-            //console.log("[Get Stats] Success");
+            console.log("[Get Stats] Success");
             res.status(200).jsonp(response);connection.close();
           }
         })
@@ -566,7 +570,7 @@ app.get('/stats',function(req,res){
 // Get Stats
 //
 app.get('/stats/:timestamp',function(req,res){
-  //console.log("[Get Stats] START");
+  console.log("[Get Stats] START");
 
 
   var connection = new Connection(sqlconfig);
@@ -585,7 +589,7 @@ app.get('/stats/:timestamp',function(req,res){
       query += "(SELECT COUNT(ID) FROM log WHERE action LIKE 'listUserComment%' AND created>"+(timestamp-86400)+" AND created<"+timestamp+" ) AS searchs";
 
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err) {
           if (err) {
             var response={
@@ -593,14 +597,14 @@ app.get('/stats/:timestamp',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             var response={
               "stats":rows[0]
             };
 
-            //console.log("[Get Stats] Success");
+            console.log("[Get Stats] Success");
             res.status(200).jsonp(response);connection.close();
           }
         })
@@ -625,7 +629,7 @@ app.get('/stats/:timestamp',function(req,res){
 // Signup User
 //
 app.post('/users',function(req,res){
-  //console.log("[Signup] START");
+  console.log("[Signup] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -650,7 +654,7 @@ app.post('/users',function(req,res){
         if((typeof req.body.version == 'undefined')||(req.body.version=='')){response.message+=" version ";}
         response.message+=")";
         res.status(400).jsonp(response);connection.close();
-        //console.log("[Signup] Error "+response.code+" "+response.message);
+        console.log("[Signup] Error "+response.code+" "+response.message);
 
       }else{
         var user={
@@ -672,7 +676,7 @@ app.post('/users',function(req,res){
         query += "INSERT INTO log (userKey,action,created) VALUES ('"+user.userKey+"','signup',"+timestamp+");";
         query += "INSERT INTO users (deviceKey,userKey,fullName,prefix,phone,system,version,created,lastConnection) VALUES";
         query += " ('"+user.deviceKey+"', '"+user.userKey+"', '"+user.fullName+"', '"+user.prefix+"', '"+user.phone+"', '"+user.system+"', '"+user.version+"', "+user.created+", "+user.lastConnection+")";
-        //console.log(query);
+        console.log(query);
 
         connection.execSql(new Request(query, function(err) {
           if (err) {
@@ -681,7 +685,7 @@ app.post('/users',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Signup] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Signup] Error "+response.code+" "+response.message+" ("+err+")");
 
           } else {
             var response={
@@ -689,7 +693,7 @@ app.post('/users',function(req,res){
             };
 
             res.status(200).jsonp(response);connection.close();
-            //console.log("[Signup] Success");
+            console.log("[Signup] Success");
           }
         }));
       }
@@ -706,7 +710,7 @@ app.post('/users',function(req,res){
 // Login User
 //
 app.put('/users/:userKey/login',function(req,res){
-  //console.log("[Login] START");
+  console.log("[Login] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -718,7 +722,7 @@ app.put('/users/:userKey/login',function(req,res){
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','login',"+timestamp+");";
       query += "UPDATE users SET lastConnection = "+timestamp+" WHERE userKey='"+req.params.userKey+"'";
-      //console.log(query);
+      console.log(query);
 
       connection.execSql(new Request(query, function(err,rowsCount) {
         if (err) {
@@ -727,7 +731,7 @@ app.put('/users/:userKey/login',function(req,res){
             "message":"An internal error has occured on our server."
           };
           res.status(500).jsonp(response);connection.close();
-          //console.log("[Login] Error "+response.code+" "+response.message+" ("+err+")");
+          console.log("[Login] Error "+response.code+" "+response.message+" ("+err+")");
 
         } else {
 
@@ -737,7 +741,7 @@ app.put('/users/:userKey/login',function(req,res){
               "message":"The userKey is not valid."
             };
             res.status(400).jsonp(response);connection.close();
-            //console.log("[Login] Error "+response.code+" "+response.message);
+            console.log("[Login] Error "+response.code+" "+response.message);
 
           }else{
             var response={
@@ -745,7 +749,7 @@ app.put('/users/:userKey/login',function(req,res){
               "message":"The user had been logged."
             };
             res.status(200).jsonp(response);connection.close();
-            //console.log("[Login] Success");
+            console.log("[Login] Success");
           }
         }
       }));
@@ -761,7 +765,7 @@ app.put('/users/:userKey/login',function(req,res){
 // Get Account
 //
 app.get('/users/:userKey/account',function(req,res){
-  //console.log("[Get Account] START");
+  console.log("[Get Account] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -774,7 +778,7 @@ app.get('/users/:userKey/account',function(req,res){
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getAccount',"+timestamp+");";
       query += "SELECT * FROM users WHERE userKey='"+req.params.userKey+"'";
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err,rowsCount) {
           if (err) {
             var response={
@@ -782,7 +786,7 @@ app.get('/users/:userKey/account',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Get Account] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Get Account] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
 
@@ -792,14 +796,14 @@ app.get('/users/:userKey/account',function(req,res){
                 "message":"The userKey is not valid."
               };
               res.status(400).jsonp(response);connection.close();
-              //console.log("[Login] Error "+response.code+" "+response.message);
+              console.log("[Login] Error "+response.code+" "+response.message);
 
             }else{
               var response={
                 "user":rows[0]
               };
 
-              //console.log("[Get Account] Success");
+              console.log("[Get Account] Success");
               res.status(200).jsonp(response);connection.close();
             }
           }
@@ -819,7 +823,7 @@ app.get('/users/:userKey/account',function(req,res){
 // Update Account
 //
 app.put('/users/:userKey/account',function(req,res){
-  //console.log("[Update Account] START");
+  console.log("[Update Account] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -876,7 +880,7 @@ app.put('/users/:userKey/account',function(req,res){
       if(data_to_update){
         query += "WHERE userKey='"+req.params.userKey+"'";
         var rows = [];
-        //console.log(query);
+        console.log(query);
         connection.execSql(new Request(query, function(err,rowsCount) {
             if (err) {
               var response={
@@ -884,7 +888,7 @@ app.put('/users/:userKey/account',function(req,res){
                 "message":"An internal error has occured on our server."
               };
               res.status(500).jsonp(response);connection.close();
-              //console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
+              console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
             }else{
               if(rowsCount==1){
                 var response={
@@ -892,7 +896,7 @@ app.put('/users/:userKey/account',function(req,res){
                   "message":"The userKey is not valid our you are Unauthorized."
                 };
                 res.status(400).jsonp(response);connection.close();
-                //console.log("[Update Account] Error "+response.code+" "+response.message);
+                console.log("[Update Account] Error "+response.code+" "+response.message);
 
               }else{
                 var response={
@@ -900,7 +904,7 @@ app.put('/users/:userKey/account',function(req,res){
                   "message":"The user had been updated."
                 };
                 res.status(200).jsonp(response);connection.close();
-                //console.log("[Update Account] Success");
+                console.log("[Update Account] Success");
 
               }
             }
@@ -912,7 +916,7 @@ app.put('/users/:userKey/account',function(req,res){
           "message":"There is no data to update."
         };
         res.status(400).jsonp(response);connection.close();
-        //console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
+        console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
 
       }
 
@@ -929,7 +933,7 @@ app.put('/users/:userKey/account',function(req,res){
 // Delete Account
 //
 app.delete('/users/:userKey',function(req,res){
-  //console.log("[Delete Account] START");
+  console.log("[Delete Account] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -943,7 +947,7 @@ app.delete('/users/:userKey',function(req,res){
       query += "DELETE FROM users WHERE userKey='"+req.params.userKey+"';";
       query += "DELETE FROM userContacts WHERE userKey='"+req.params.userKey+"';";
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err,rowsCount) {
           if (err) {
             var response={
@@ -951,7 +955,7 @@ app.delete('/users/:userKey',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
           }else{
             if(rowsCount==1){
               var response={
@@ -959,14 +963,14 @@ app.delete('/users/:userKey',function(req,res){
                 "message":"The userKey is not valid our you are Unauthorized."
               };
               res.status(400).jsonp(response);connection.close();
-              //console.log("[Delete Account] Error "+response.code+" "+response.message);
+              console.log("[Delete Account] Error "+response.code+" "+response.message);
             }else{
               var response={
                 "code":"user_deleted",
                 "message":"The user account had been deleted."
               };
               res.status(200).jsonp(response);connection.close();
-              //console.log("[Delete Account] Success");
+              console.log("[Delete Account] Success");
 
             }
           }
@@ -983,7 +987,7 @@ app.delete('/users/:userKey',function(req,res){
 // Add Contact
 //
 app.post('/users/:userKey/contacts',function(req,res){
-  //console.log("[Add User Contact] START");
+  console.log("[Add User Contact] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1002,7 +1006,7 @@ app.post('/users/:userKey/contacts',function(req,res){
         if((typeof req.body.phone == 'undefined')||(req.body.phone=='')){response.message+=" phone ";}
         response.message+=")";
         res.status(400).jsonp(response);connection.close();
-        //console.log("[Add User Contact] Error "+response.code+" "+response.message);
+        console.log("[Add User Contact] Error "+response.code+" "+response.message);
 
       }else{
         var contact={
@@ -1020,7 +1024,7 @@ app.post('/users/:userKey/contacts',function(req,res){
         query += "DELETE FROM userContacts WHERE phone='"+contact.phone+"' AND userKey='"+contact.userKey+"';";
         query += "INSERT INTO userContacts (userKey,fullName,phone,notify) VALUES";
         query += " ('"+contact.userKey+"', '"+contact.fullName+"', '"+contact.phone+"', "+contact.notify+");";
-        //console.log(query);
+        console.log(query);
 
         connection.execSql(new Request(query, function(err) {
           if (err) {
@@ -1029,14 +1033,14 @@ app.post('/users/:userKey/contacts',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Add User Contact] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Add User Contact] Error "+response.code+" "+response.message+" ("+err+")");
 
           } else {
             var response={
               "contact":contact
             };
             res.status(200).jsonp(response);connection.close();
-            //console.log("[Add User Contact] Success");
+            console.log("[Add User Contact] Success");
           }
         }));
       }
@@ -1053,7 +1057,7 @@ app.post('/users/:userKey/contacts',function(req,res){
 // List Contacts
 //
 app.get('/users/:userKey/contacts',function(req,res){
-  //console.log("[List User Contacts] START");
+  console.log("[List User Contacts] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1064,7 +1068,7 @@ app.get('/users/:userKey/contacts',function(req,res){
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserContacts',"+timestamp+");";
-      query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
+      /*query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
       query += "FROM userContacts ";
       query += "INNER JOIN userComments ";
       query += "ON userComments.phone=userContacts.phone ";
@@ -1074,10 +1078,14 @@ app.get('/users/:userKey/contacts',function(req,res){
       query += " userContacts.userKey,";
       query += " userContacts.fullName,";
       query += " userContacts.phone,";
-      query += " userContacts.notify";
+      query += " userContacts.notify";*/
+
+      query += "SELECT userContacts.*, 0 as rating, 0 as commentsAmount ";
+      query += "FROM userContacts ";
+      query += "WHERE userContacts.userKey='"+req.params.userKey+"' ";
 
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err) {
           if (err) {
             var response={
@@ -1085,13 +1093,13 @@ app.get('/users/:userKey/contacts',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             var response={
               "contacts":rows
             };
-            //console.log("[List User Contacts] Success");
+            console.log("[List User Contacts] Success");
             res.status(200).jsonp(response);connection.close();
           }
         })
@@ -1108,7 +1116,7 @@ app.get('/users/:userKey/contacts',function(req,res){
 // Delete Contact
 //
 app.delete('/users/:userKey/contacts/',function(req,res){
-  //console.log("[Delete Account] START");
+  console.log("[Delete Account] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1121,7 +1129,7 @@ app.delete('/users/:userKey/contacts/',function(req,res){
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteUserContacts',"+timestamp+");";
       query += "DELETE FROM userContacts WHERE userKey='"+req.params.userKey+"'";
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err,rowsCount) {
           if (err) {
             var response={
@@ -1129,7 +1137,7 @@ app.delete('/users/:userKey/contacts/',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
           }else{
             if(rowsCount==1){
               var response={
@@ -1137,14 +1145,14 @@ app.delete('/users/:userKey/contacts/',function(req,res){
                 "message":"The userKey is not valid our you there is not contacts."
               };
               res.status(400).jsonp(response);connection.close();
-              //console.log("[Delete Account] Error "+response.code+" "+response.message);
+              console.log("[Delete Account] Error "+response.code+" "+response.message);
             }else{
               var response={
                 "code":"contacts_deleted",
                 "message":"The contacts had been deleted."
               };
               res.status(200).jsonp(response);connection.close();
-              //console.log("[Delete Account] Success");
+              console.log("[Delete Account] Success");
 
             }
           }
@@ -1160,7 +1168,7 @@ app.delete('/users/:userKey/contacts/',function(req,res){
 // Get Contact
 //
 app.get('/users/:userKey/contacts/:phone',function(req,res){
-  //console.log("[Get User Contact] START");
+  console.log("[Get User Contact] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1171,7 +1179,8 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getUserContact',"+timestamp+");";
-      query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
+
+      /*query += "SELECT userContacts.*, SUM(userComments.rating)/COUNT(userComments.ID) as rating, COUNT(userComments.ID) as commentsAmount ";
       query += "FROM userContacts ";
       query += "INNER JOIN userComments ";
       query += "ON userComments.phone=userContacts.phone ";
@@ -1181,10 +1190,15 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
       query += " userContacts.userKey,";
       query += " userContacts.fullName,";
       query += " userContacts.phone,";
-      query += " userContacts.notify";
+      query += " userContacts.notify";*/
+
+      query += "SELECT userContacts.*, 0 as rating, 0 as commentsAmount ";
+      query += "FROM userContacts ";
+      query += "WHERE userContacts.phone='"+req.params.phone+"' AND userContacts.userKey='"+req.params.userKey+"' ";
+
 
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err) {
           if (err) {
             var response={
@@ -1192,13 +1206,13 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Get User Contact] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Get User Contact] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             var response={
               "contact":rows[0]
             };
-            //console.log("[Get User Contact] Success");
+            console.log("[Get User Contact] Success");
             res.status(200).jsonp(response);connection.close();
           }
         })
@@ -1218,7 +1232,7 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
 // Update Contact
 //
 app.put('/users/:userKey/contacts/:phone',function(req,res){
-  //console.log("[Update Contact] START");
+  console.log("[Update Contact] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1250,7 +1264,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
       if(data_to_update){
         query += "WHERE phone='"+req.params.phone+"' AND serKey='"+req.params.userKey+"'";
         var rows = [];
-        //console.log(query);
+        console.log(query);
         connection.execSql(new Request(query, function(err,rowsCount) {
             if (err) {
               var response={
@@ -1258,7 +1272,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
                 "message":"An internal error has occured on our server."
               };
               res.status(500).jsonp(response);connection.close();
-              //console.log("[Update Contact] Error "+response.code+" "+response.message+" ("+err+")");
+              console.log("[Update Contact] Error "+response.code+" "+response.message+" ("+err+")");
             }else{
               if(rowsCount==1){
                 var response={
@@ -1266,7 +1280,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
                   "message":"The userKey or phone is not valid our you are Unauthorized."
                 };
                 res.status(400).jsonp(response);connection.close();
-                //console.log("[Update Contact] Error "+response.code+" "+response.message);
+                console.log("[Update Contact] Error "+response.code+" "+response.message);
 
               }else{
                 var response={
@@ -1274,7 +1288,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
                   "message":"The contact had been updated."
                 };
                 res.status(200).jsonp(response);connection.close();
-                //console.log("[Update Contact] Success");
+                console.log("[Update Contact] Success");
 
               }
             }
@@ -1286,7 +1300,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
           "message":"There is no data to update."
         };
         res.status(400).jsonp(response);connection.close();
-        //console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
+        console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
 
       }
 
@@ -1303,7 +1317,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
 // Delete Contact
 //
 app.delete('/users/:userKey/contacts/:phone',function(req,res){
-  //console.log("[Delete Account] START");
+  console.log("[Delete Account] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1317,7 +1331,7 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteUserContact',"+timestamp+");";
       query += "DELETE FROM userContacts WHERE phone='"+req.params.phone+"' AND userKey='"+req.params.userKey+"'";
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err,rowsCount) {
           if (err) {
             var response={
@@ -1325,7 +1339,7 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
           }else{
             if(rowsCount==1){
               var response={
@@ -1333,14 +1347,14 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
                 "message":"The userKey or phone is not valid our you are Unauthorized."
               };
               res.status(400).jsonp(response);connection.close();
-              //console.log("[Delete Account] Error "+response.code+" "+response.message);
+              console.log("[Delete Account] Error "+response.code+" "+response.message);
             }else{
               var response={
                 "code":"contact_deleted",
                 "message":"The contact account had been deleted."
               };
               res.status(200).jsonp(response);connection.close();
-              //console.log("[Delete Account] Success");
+              console.log("[Delete Account] Success");
 
             }
           }
@@ -1359,7 +1373,7 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
 // List Contacts Comments
 //
 app.get('/users/:userKey/comments',function(req,res){
-  //console.log("[List Contacts Comments] START");
+  console.log("[List Contacts Comments] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1384,7 +1398,7 @@ app.get('/users/:userKey/comments',function(req,res){
       }
 
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err) {
           if (err) {
             var response={
@@ -1392,7 +1406,7 @@ app.get('/users/:userKey/comments',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[List Contacts Comments] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[List Contacts Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             var response={
@@ -1404,7 +1418,7 @@ app.get('/users/:userKey/comments',function(req,res){
               }
               response.comments.push(comment);
             });
-            //console.log("[List Contacts Comments] Success");
+            console.log("[List Contacts Comments] Success");
             res.status(200).jsonp(response);connection.close();
           }
         })
@@ -1423,7 +1437,7 @@ app.get('/users/:userKey/comments',function(req,res){
 // List Contact Comments
 //
 app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
-  //console.log("[List User Comments] START");
+  console.log("[List User Comments] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1447,7 +1461,7 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
       }
 
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err) {
           if (err) {
             var response={
@@ -1455,7 +1469,7 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             var response={
@@ -1467,7 +1481,7 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
               }
               response.comments.push(comment);
             });
-            //console.log("[List User Comments] Success");
+            console.log("[List User Comments] Success");
             res.status(200).jsonp(response);connection.close();
           }
         })
@@ -1487,7 +1501,7 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
 app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
 
 
-  //console.log("[Add Comment] START");
+  console.log("[Add Comment] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1508,7 +1522,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
         if((typeof req.body.content == 'undefined')||(req.body.content=='')){response.message+=" content ";}
         response.message+=")";
         res.status(400).jsonp(response);connection.close();
-        //console.log("[Add Comment] Error "+response.code+" "+response.message);
+        console.log("[Add Comment] Error "+response.code+" "+response.message);
 
       }else{
 
@@ -1529,7 +1543,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
         query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','addUserComment',"+timestamp+");";
         query += "INSERT INTO userComments (commentKey,parentKey,userKey,phone,rating,content,reported,created) VALUES";
         query += " ('"+comment.commentKey+"', '"+comment.parentKey+"', '"+comment.userKey+"', '"+comment.phone+"', '"+comment.rating+"', '"+comment.content+"', '"+comment.reported+"', "+comment.created+")";
-        //console.log(query);
+        console.log(query);
 
         connection.execSql(new Request(query, function(err) {
           if (err) {
@@ -1538,14 +1552,14 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Add Comment] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Add Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
           } else {
             var response={
               "comment":comment
             };
             res.status(200).jsonp(response);connection.close();
-            //console.log("[Add Comment] Success");
+            console.log("[Add Comment] Success");
           }
         }));
       }
@@ -1563,7 +1577,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
 // Get Contact Comment
 //
 app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res){
-  //console.log("[Get User Comment] START");
+  console.log("[Get User Comment] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1576,7 +1590,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getUserComments',"+timestamp+");";
       query += "SELECT * FROM userComments WHERE commentKey='"+req.params.commentKey+"' AND phone='"+req.params.phone+"'";
       var rows=[];
-      //console.log(query);
+      console.log(query);
       connection.execSql(new Request(query, function(err,rowsCount) {
           if (err) {
             var response={
@@ -1584,7 +1598,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
               "message":"An internal error has occured on our server."
             };
             res.status(500).jsonp(response);connection.close();
-            //console.log("[Get User Comment] Error "+response.code+" "+response.message+" ("+err+")");
+            console.log("[Get User Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
             if(rowsCount==1){
@@ -1593,7 +1607,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
                 "message":"The commentKey or phone is not valid."
               };
               res.status(400).jsonp(response);connection.close();
-              //console.log("[Report Comment] Error "+response.code+" "+response.message);
+              console.log("[Report Comment] Error "+response.code+" "+response.message);
 
             }else{
               var response={
@@ -1605,7 +1619,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
               }
               response.comment.push(comment);
 
-              //console.log("[Get User Comment] Success");
+              console.log("[Get User Comment] Success");
               res.status(200).jsonp(response);connection.close();
             }
           }
@@ -1624,7 +1638,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
 // Report Contact Comment
 //
 app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(req,res){
-  //console.log("[Report Comment] START");
+  console.log("[Report Comment] START");
 
   var timestamp = new Date().getTime();
   timestamp = Math.floor(timestamp / 1000);
@@ -1636,7 +1650,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','reportUserComment',"+timestamp+");";
       query += "UPDATE userComments SET reported = 1 WHERE commentKey='"+req.params.commentKey+"'";
-      //console.log(query);
+      console.log(query);
 
       connection.execSql(new Request(query, function(err,rowsCount) {
         if (err) {
@@ -1645,7 +1659,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
             "message":"An internal error has occured on our server."
           };
           res.status(500).jsonp(response);connection.close();
-          //console.log("[Report Comment] Error "+response.code+" "+response.message+" ("+err+")");
+          console.log("[Report Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
         } else {
 
@@ -1655,7 +1669,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
               "message":"The commentKey or phone is not valid."
             };
             res.status(400).jsonp(response);connection.close();
-            //console.log("[Report Comment] Error "+response.code+" "+response.message);
+            console.log("[Report Comment] Error "+response.code+" "+response.message);
 
           }else{
             var response={
@@ -1663,7 +1677,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
               "message":"The comment had been reported."
             };
             res.status(200).jsonp(response);connection.close();
-            //console.log("[Report Comment] Success");
+            console.log("[Report Comment] Success");
           }
         }
       }));
@@ -1699,29 +1713,29 @@ function mssql_escape (str) {
 
 
 function checkAdminApi(connection,req,res,callback){
-  //console.log("[checkAdminApi] START");
-  //console.log("[checkAdminApi] adminApiKey: "+req.params.adminApiKey);
+  console.log("[checkAdminApi] START");
+  console.log("[checkAdminApi] adminApiKey: "+req.params.adminApiKey);
   var timestamp = new Date().getTime();timestamp = Math.floor(timestamp / 1000);
 
   if((typeof req.params.adminApiKey == 'undefined')||(req.params.adminApiKey=='')){
     var response={"code":"missing_adminapikey","message":"You didn't provide an apiKey."};res.status(400).jsonp(response);connection.close();
-    //console.log("missing_adminapikey");
+    console.log("missing_adminapikey");
     callback(true);
   }else{
     var apicheck_query = "SELECT adminKey FROM admins WHERE adminApiKey='"+req.params.adminApiKey+"'";
-    //console.log(apicheck_query);
+    console.log(apicheck_query);
     var apicheck_rows = [];
     connection.execSql(new Request(apicheck_query, function(apicheck_err,apicheck_rowsCount) {
       if (apicheck_err) {
         var response={"code":"db_exception","message":"An internal error has occured on our server."};
         res.status(500).jsonp(response);connection.close();
-        //console.log("db_exception");
+        console.log("db_exception");
         callback(true);
       }else{
         if(apicheck_rowsCount==0){
           var response={"code":"adminapiket_not_valid","message":"The adminApiKey you entered is not valid."};
           res.status(401).jsonp(response);connection.close();
-          //console.log("adminapiket_not_valid");
+          console.log("adminapiket_not_valid");
           callback(true);
         }else{
           var adminKey = apicheck_rows[0].brandKey;
