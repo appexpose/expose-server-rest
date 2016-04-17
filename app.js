@@ -1,4 +1,4 @@
-var version = "1.0.2";
+var version = "1.0.5";
 
 var express = require('express');
 var app = express();
