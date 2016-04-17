@@ -185,7 +185,7 @@ app.get('/admins/:adminApiKey/users',function(req,res){
   connection.on('connect', function(err) {
     if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
 
-      checkAdminApi(req,res,function(err,adminKey){
+      checkAdminApi(connection,req,res,function(err,adminKey){
         if(!err){
 
           var query = "SELECT * FROM users";
@@ -236,7 +236,7 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
   connection.on('connect', function(err) {
     if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
 
-      checkAdminApi(req,res,function(err,adminKey){
+      checkAdminApi(connection,req,res,function(err,adminKey){
         if(!err){
 
           var query = "";
@@ -297,7 +297,7 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
     if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
 
 
-      checkAdminApi(req,res,function(err,adminKey){
+      checkAdminApi(connection,req,res,function(err,adminKey){
         if(!err){
 
           var query = "SELECT * FROM userComments";
@@ -350,7 +350,7 @@ app.get('/admins/:adminApiKey/log',function(req,res){
     if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
 
 
-      checkAdminApi(req,res,function(err,adminKey){
+      checkAdminApi(connection,req,res,function(err,adminKey){
         if(!err){
 
           var query = "SELECT * FROM log";
@@ -1698,7 +1698,7 @@ function mssql_escape (str) {
 }
 
 
-function checkAdminApi(req,res,callback){
+function checkAdminApi(connection,req,res,callback){
   //console.log("[checkAdminApi] START");
   //console.log("[checkAdminApi] adminApiKey: "+req.params.adminApiKey);
   var timestamp = new Date().getTime();timestamp = Math.floor(timestamp / 1000);
