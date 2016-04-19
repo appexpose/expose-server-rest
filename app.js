@@ -1,4 +1,4 @@
-var version = "1.0.61";
+var version = "1.0.62";
 
 var express = require('express');
 var app = express();
@@ -17,7 +17,10 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 var sqlconfig = require('./sql.config');
+var twilio = require('twilio')(accountSid, authToken);
 
+var twilioconfig = require('./twilio.config');
+var twilio = require('twilio')(twilioconfig.accountSid, twilioconfig.authToken);
 
 server.listen(port, function () {});
 
@@ -1635,6 +1638,15 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
             var response={
               "comment":comment
             };
+
+            twilio.messages.create({
+            	to: comment.phone,
+            	from: "+34932202908",
+            	body: "Este n&#250;mero ha sido expuesto, visita www.appexpose.com",
+            }, function(err, message) {
+            	console.log(message.sid);
+            });
+
             res.status(200).jsonp(response);connection.close();
             console.log("[Add Comment] Success");
           }

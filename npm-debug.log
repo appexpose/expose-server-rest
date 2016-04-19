@@ -1,0 +1,183 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'twilio' ]
+2 info using npm@2.14.12
+3 info using node@v4.3.1
+4 verbose install initial load of /usr/local/lib/package.json
+5 verbose readDependencies loading dependencies from /usr/local/lib/package.json
+6 silly cache add args [ 'twilio', null ]
+7 verbose cache add spec twilio
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: 'twilio',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'twilio',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: 'latest',
+8 silly cache add   type: 'tag' }
+9 silly addNamed twilio@latest
+10 verbose addNamed "latest" is being treated as a dist-tag for twilio
+11 info addNameTag [ 'twilio', 'latest' ]
+12 silly mapToRegistry name twilio
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/twilio
+16 verbose addNameTag registry:https://registry.npmjs.org/twilio not in flight; fetching
+17 verbose request uri https://registry.npmjs.org/twilio
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 20:18:16
+20 verbose request id 340ff7e7a3f1eb6d
+21 http request GET https://registry.npmjs.org/twilio
+22 http 200 https://registry.npmjs.org/twilio
+23 verbose headers { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+23 verbose headers   etag: '"2B79YUJMYPF35Y5MXIAKTRNT5"',
+23 verbose headers   'content-type': 'application/json',
+23 verbose headers   'cache-control': 'max-age=300',
+23 verbose headers   'content-length': '70189',
+23 verbose headers   'accept-ranges': 'bytes',
+23 verbose headers   date: 'Tue, 19 Apr 2016 18:18:17 GMT',
+23 verbose headers   via: '1.1 varnish',
+23 verbose headers   age: '0',
+23 verbose headers   connection: 'keep-alive',
+23 verbose headers   'x-served-by': 'cache-lhr6328-LHR',
+23 verbose headers   'x-cache': 'HIT',
+23 verbose headers   'x-cache-hits': '1',
+23 verbose headers   'x-timer': 'S1461089896.996668,VS0,VE710',
+23 verbose headers   vary: 'Accept-Encoding' }
+24 silly get cb [ 200,
+24 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+24 silly get     etag: '"2B79YUJMYPF35Y5MXIAKTRNT5"',
+24 silly get     'content-type': 'application/json',
+24 silly get     'cache-control': 'max-age=300',
+24 silly get     'content-length': '70189',
+24 silly get     'accept-ranges': 'bytes',
+24 silly get     date: 'Tue, 19 Apr 2016 18:18:17 GMT',
+24 silly get     via: '1.1 varnish',
+24 silly get     age: '0',
+24 silly get     connection: 'keep-alive',
+24 silly get     'x-served-by': 'cache-lhr6328-LHR',
+24 silly get     'x-cache': 'HIT',
+24 silly get     'x-cache-hits': '1',
+24 silly get     'x-timer': 'S1461089896.996668,VS0,VE710',
+24 silly get     vary: 'Accept-Encoding' } ]
+25 verbose get saving twilio to /Users/pablo/.npm/registry.npmjs.org/twilio/.cache.json
+26 silly addNameTag next cb for twilio with tag latest
+27 silly addNamed twilio@2.9.1
+28 verbose addNamed "2.9.1" is a plain semver version for twilio
+29 silly mapToRegistry name twilio
+30 silly mapToRegistry using default registry
+31 silly mapToRegistry registry https://registry.npmjs.org/
+32 silly mapToRegistry uri https://registry.npmjs.org/twilio
+33 verbose addRemoteTarball https://registry.npmjs.org/twilio/-/twilio-2.9.1.tgz not in flight; adding
+34 verbose addRemoteTarball [ 'https://registry.npmjs.org/twilio/-/twilio-2.9.1.tgz',
+34 verbose addRemoteTarball   '043bfa240ccb33f5f76b771434c2421a0144bc85' ]
+35 info retry fetch attempt 1 at 20:18:17
+36 info attempt registry request try #1 at 20:18:17
+37 http fetch GET https://registry.npmjs.org/twilio/-/twilio-2.9.1.tgz
+38 http fetch 200 https://registry.npmjs.org/twilio/-/twilio-2.9.1.tgz
+39 silly fetchAndShaCheck shasum 043bfa240ccb33f5f76b771434c2421a0144bc85
+40 verbose addTmpTarball /var/folders/p9/f7g4sxfn61779ch90djts5xm0000gn/T/npm-64760-620afd98/registry.npmjs.org/twilio/-/twilio-2.9.1.tgz not in flight; adding
+41 verbose addTmpTarball already have metadata; skipping unpack for twilio@2.9.1
+42 silly cache afterAdd twilio@2.9.1
+43 verbose afterAdd /Users/pablo/.npm/twilio/2.9.1/package/package.json not in flight; writing
+44 verbose afterAdd /Users/pablo/.npm/twilio/2.9.1/package/package.json written
+45 silly install resolved [ { name: 'twilio',
+45 silly install resolved     description: 'A Twilio helper library',
+45 silly install resolved     version: '2.9.1',
+45 silly install resolved     author: { name: 'Kevin Whinnery', email: 'kevin.whinnery@gmail.com' },
+45 silly install resolved     contributors: [ [Object] ],
+45 silly install resolved     repository:
+45 silly install resolved      { type: 'git',
+45 silly install resolved        url: 'git+https://github.com/twilio/twilio-node.git' },
+45 silly install resolved     dependencies:
+45 silly install resolved      { request: '2.55.x',
+45 silly install resolved        underscore: '1.x',
+45 silly install resolved        jsonwebtoken: '5.4.x',
+45 silly install resolved        'jwt-simple': '0.1.x',
+45 silly install resolved        q: '0.9.7',
+45 silly install resolved        scmp: '0.0.3',
+45 silly install resolved        deprecate: '^0.1.0',
+45 silly install resolved        'string.prototype.startswith': '^0.2.0' },
+45 silly install resolved     devDependencies: { express: '3.x', 'jasmine-node': '2.0.x' },
+45 silly install resolved     scripts: { test: 'jasmine-node --captureExceptions spec' },
+45 silly install resolved     main: './lib',
+45 silly install resolved     engines: { node: '>=0.8.0' },
+45 silly install resolved     license: 'MIT',
+45 silly install resolved     gitHead: '1adce60ae5f234156060c86d1c5dec8706036091',
+45 silly install resolved     bugs: { url: 'https://github.com/twilio/twilio-node/issues' },
+45 silly install resolved     homepage: 'https://github.com/twilio/twilio-node#readme',
+45 silly install resolved     _id: 'twilio@2.9.1',
+45 silly install resolved     _shasum: '043bfa240ccb33f5f76b771434c2421a0144bc85',
+45 silly install resolved     _from: 'twilio@latest',
+45 silly install resolved     _npmVersion: '2.13.2',
+45 silly install resolved     _nodeVersion: '2.5.0',
+45 silly install resolved     _npmUser: { name: 'carlosdp', email: 'carlosdiazpadron@gmail.com' },
+45 silly install resolved     dist:
+45 silly install resolved      { shasum: '043bfa240ccb33f5f76b771434c2421a0144bc85',
+45 silly install resolved        tarball: 'https://registry.npmjs.org/twilio/-/twilio-2.9.1.tgz' },
+45 silly install resolved     maintainers:
+45 silly install resolved      [ [Object],
+45 silly install resolved        [Object],
+45 silly install resolved        [Object],
+45 silly install resolved        [Object],
+45 silly install resolved        [Object],
+45 silly install resolved        [Object],
+45 silly install resolved        [Object] ],
+45 silly install resolved     _npmOperationalInternal:
+45 silly install resolved      { host: 'packages-12-west.internal.npmjs.com',
+45 silly install resolved        tmp: 'tmp/twilio-2.9.1.tgz_1459360256586_0.06725590419955552' },
+45 silly install resolved     directories: {},
+45 silly install resolved     _resolved: 'https://registry.npmjs.org/twilio/-/twilio-2.9.1.tgz' } ]
+46 info install twilio@2.9.1 into /usr/local/lib
+47 info installOne twilio@2.9.1
+48 verbose installOne of twilio to /usr/local/lib not in flight; installing
+49 verbose lock using /Users/pablo/.npm/_locks/twilio-6063fbb2b66679f2.lock for /usr/local/lib/node_modules/twilio
+50 silly install write writing twilio 2.9.1 to /usr/local/lib/node_modules/twilio
+51 verbose unbuild lib/node_modules/twilio
+52 silly gentlyRm /usr/local/lib/node_modules/twilio is being purged from base /usr/local
+53 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/twilio
+54 verbose tar unpack /Users/pablo/.npm/twilio/2.9.1/package.tgz
+55 verbose tar unpacking to /usr/local/lib/node_modules/twilio
+56 silly gentlyRm /usr/local/lib/node_modules/twilio is being purged
+57 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/twilio
+58 silly gunzTarPerm modes [ '755', '644' ]
+59 error tar.unpack untar error /Users/pablo/.npm/twilio/2.9.1/package.tgz
+60 verbose unlock done using /Users/pablo/.npm/_locks/twilio-6063fbb2b66679f2.lock for /usr/local/lib/node_modules/twilio
+61 verbose fstream_path /usr/local/lib/node_modules/twilio
+62 verbose fstream_type Directory
+63 verbose fstream_class DirWriter
+64 verbose stack Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/twilio'
+64 verbose stack     at Error (native)
+65 verbose fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:35:25
+65 verbose fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53
+65 verbose fstream_stack FSReqWrap.oncomplete (fs.js:82:15)
+66 verbose cwd /Users/pablo/development/expose-server-rest
+67 error Darwin 15.3.0
+68 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "twilio"
+69 error node v4.3.1
+70 error npm  v2.14.12
+71 error path /usr/local/lib/node_modules/twilio
+72 error code EACCES
+73 error errno -13
+74 error syscall mkdir
+75 error Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/twilio'
+75 error     at Error (native)
+75 error  { [Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/twilio']
+75 error   errno: -13,
+75 error   code: 'EACCES',
+75 error   syscall: 'mkdir',
+75 error   path: '/usr/local/lib/node_modules/twilio',
+75 error   fstream_type: 'Directory',
+75 error   fstream_path: '/usr/local/lib/node_modules/twilio',
+75 error   fstream_class: 'DirWriter',
+75 error   fstream_stack:
+75 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:35:25',
+75 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53',
+75 error      'FSReqWrap.oncomplete (fs.js:82:15)' ] }
+76 error Please try running this command again as root/Administrator.
+77 verbose exit [ -13, true ]
+78 verbose unbuild lib/node_modules/twilio
+79 silly gentlyRm /usr/local/lib/node_modules/twilio is being purged from base /usr/local
+80 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/twilio
