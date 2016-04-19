@@ -1,4 +1,4 @@
-var version = "1.0.6";
+var version = "1.0.61";
 
 var express = require('express');
 var app = express();
@@ -124,6 +124,17 @@ app.get('/tables',function(req,res){
       query += "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('1','login',10010);";
       query += "";
+      query += "DROP TABLE IF EXISTS smsAlerts;";
+      query += "";
+      query += "CREATE TABLE smsAlerts";
+      query += "(";
+      query += "ID int IDENTITY(1,1) PRIMARY KEY,";
+      query += "phone varchar(255) NOT NULL,";
+      query += "created int NOT NULL";
+      query += ");";
+      query += "";
+      query += "INSERT INTO smsAlerts (phone,created) VALUES ('0034000000002',10000,10010);";
+      query += "";
       query += "DROP TABLE IF EXISTS admins;";
       query += "";
       query += "CREATE TABLE admins";
@@ -140,6 +151,72 @@ app.get('/tables',function(req,res){
       query += "";
       query += "INSERT INTO admins (adminKey,adminApiKey,fullName,email,password,created,lastConnection) VALUES ('1','1','Admin uno','adminuno@appexpose.com','nopassword',10000,10010);";
       query += "";
+
+      console.log(query);
+
+      connection.execSql(new Request(query, function(err) {
+        if (err) {
+          var response={
+            "code":"db_exception",
+            "message":"An internal error has occured on our server."
+          };
+          res.status(500).jsonp(response);connection.close();
+          console.log(err);
+
+        } else {
+          var response={
+            "code":"Tables created",
+            "message":"The tables had been created."
+          };
+          res.status(200).jsonp(response);connection.close();
+        }
+      }));
+    }
+  });
+});
+
+app.get('/tables/smsalets/',function(req,res){
+  var connection = new Connection(sqlconfig);
+  connection.on('connect', function(err) {
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+      var query = "";
+      query += "CREATE TABLE smsAlerts";
+      query += "(";
+      query += "ID int IDENTITY(1,1) PRIMARY KEY,";
+      query += "phone varchar(255) NOT NULL,";
+      query += "created int NOT NULL";
+      query += ");";
+      query += "";
+
+      console.log(query);
+
+      connection.execSql(new Request(query, function(err) {
+        if (err) {
+          var response={
+            "code":"db_exception",
+            "message":"An internal error has occured on our server."
+          };
+          res.status(500).jsonp(response);connection.close();
+          console.log(err);
+
+        } else {
+          var response={
+            "code":"Tables created",
+            "message":"The tables had been created."
+          };
+          res.status(200).jsonp(response);connection.close();
+        }
+      }));
+    }
+  });
+});
+
+app.get('/tables/smsalets/data',function(req,res){
+  var connection = new Connection(sqlconfig);
+  connection.on('connect', function(err) {
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+      var query = "";
+      query += "INSERT INTO smsAlerts (phone,created) VALUES ('0034000000002',10000,10010);";
 
       console.log(query);
 
