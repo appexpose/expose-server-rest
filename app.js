@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 
 var sha1 = require('sha1');
 var sql_connection;
@@ -17,7 +17,6 @@ var Connection = require('tedious').Connection;
 var Request = require('tedious').Request;
 var TYPES = require('tedious').TYPES;
 var sqlconfig = require('./sql.config');
-var twilio = require('twilio')(accountSid, authToken);
 
 var twilioconfig = require('./twilio.config');
 var twilio = require('twilio')(twilioconfig.accountSid, twilioconfig.authToken);
