@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 80;
 
 var sha1 = require('sha1');
 var sql_connection;
