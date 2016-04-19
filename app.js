@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 80;
 
 var sha1 = require('sha1');
 var sql_connection;
@@ -1640,7 +1640,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
 
             twilio.messages.create({
             	to: comment.phone.replace("00","+"),
-            	from: "+16504886729",
+            	from: "+16504498290",
             	body: "Este número ha sido expuesto, visita www.appexpose.com/es/search/ y lee el comentario",
             }, function(err, message) {
               if(err){
