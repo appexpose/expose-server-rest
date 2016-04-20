@@ -1,4 +1,4 @@
-var version = "1.0.63";
+var version = "0.9.64";
 
 var express = require('express');
 var app = express();
@@ -1638,6 +1638,8 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
               "comment":comment
             };
 
+
+            /*
             twilio.messages.create({
             	to: comment.phone.replace("00","+"),
             	from: "+16504498290",
@@ -1651,6 +1653,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
 
               }
             });
+            */
 
             res.status(200).jsonp(response);connection.close();
             console.log("[Add Comment] Success");
