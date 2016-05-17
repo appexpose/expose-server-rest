@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var server = require('http').createServer(app);
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 
 var sha1 = require('sha1');
 var sql_connection;
@@ -1159,7 +1159,7 @@ app.get('/users/:userKey/contacts',function(req,res){
       query += " userContacts.phone,";
       query += " userContacts.notify";*/
 
-      query += "SELECT uct.*, (SELECT SUM(ucm.rating) DIV COUNT(ID) FROM userComments as ucm WHERE uct.userKey=ucm.userKey) as rating, (SELECT COUNT(ucm.ID) FROM userComments as ucm WHERE uct.userKey=ucm.userKey) as commentsAmount ";
+      query += "SELECT uct.*, (SELECT SUM(ucm.rating) / COUNT(ID) FROM userComments as ucm WHERE uct.userKey=ucm.userKey) as rating, (SELECT COUNT(ucm.ID) FROM userComments as ucm WHERE uct.userKey=ucm.userKey) as commentsAmount ";
       query += "FROM userContacts as uct ";
       query += "WHERE uct.userKey='"+req.params.userKey+"' ";
 
@@ -1463,9 +1463,11 @@ app.get('/users/:userKey/comments',function(req,res){
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
-      query += "SELECT * FROM userComments WHERE phone IN ";
+      query += "SELECT ucm.*, uct.fullName FROM userComments as ucm, userContacts as uct WHERE ucm.phone = uct.phone AND uct.userKey='"+req.params.userKey+"' AND ucm.phone IN ";
       query += "(SELECT phone FROM userContacts WHERE userKey='"+req.params.userKey+"') ";
-      query += "ORDER BY created DESC";
+      query += "ORDER BY ucm.created DESC";
+      //query += "SELECT ucm.*, uct.fullName FROM userComments as ucm, userContacts as uct WHERE ucm.phone='"+req.params.phone+"' AND ucm.userKey = uct.userKey ORDER BY created DESC";
+
 
       if(!((typeof req.query.limit == 'undefined')||(req.query.limit==''))){
         limit=req.query.limit;
@@ -1528,7 +1530,70 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
-      query += "SELECT ucm.*, uct.fullName FROM userComments as ucm, userContacts as uct WHERE ucm.phone='"+req.params.phone+"' AND ucm.userKey = uct.userKey ORDER BY created DESC";
+      query += "SELECT ucm.*, uct.fullName FROM userComments as ucm, userContacts as uct WHERE ucm.phone='"+req.params.phone+"' AND ucm.phone = uct.phone AND uct.userKey = '"+req.params.userKey+"' ORDER BY ucm.created DESC";
+
+      if(!((typeof req.query.limit == 'undefined')||(req.query.limit==''))){
+        limit=req.query.limit;
+        offset=0;
+        if(!((typeof req.query.offset == 'undefined')||(req.query.offset==''))){
+          offset=req.query.offset;
+        }
+        query += " OFFSET "+offset+" ROWS FETCH NEXT "+limit+" ROWS ONLY"
+      }
+
+      var rows=[];
+      console.log(query);
+      connection.execSql(new Request(query, function(err) {
+          if (err) {
+            var response={
+              "code":"db_exception",
+              "message":"An internal error has occured on our server."
+            };
+            connection.close();res.status(500).jsonp(response);connection.close();
+            console.log("[List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
+
+          }else{
+            var response={
+              "comments":[]
+            };
+            rows.forEach(function(comment){
+              if(comment.reported){
+                comment.content="";
+              }
+              response.comments.push(comment);
+            });
+            console.log("[List User Comments] Success");
+            connection.close();res.status(200).jsonp(response);connection.close();
+          }
+        })
+        .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
+      );
+
+
+    }
+  });
+
+
+});
+
+
+//
+// List Profile Comments
+//
+app.get('/users/:userKey/profile/comments',function(req,res){
+  console.log("[List User Comments] START");
+
+  var timestamp = new Date().getTime();
+  timestamp = Math.floor(timestamp / 1000);
+
+  var connection = new Connection(sqlconfig);
+  connection.on('connect', function(err) {
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
+
+
+      var query = "";
+      query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
+      query += "SELECT ucm.* FROM userComments as ucm, users as u WHERE ucm.phone = u.phone AND u.userKey = '"+req.params.userKey+"' ORDER BY ucm.created DESC";
 
       if(!((typeof req.query.limit == 'undefined')||(req.query.limit==''))){
         limit=req.query.limit;
