@@ -1,4 +1,4 @@
-var version = "0.9.64";
+var version = "0.9.65";
 
 var express = require('express');
 var app = express();
@@ -42,7 +42,7 @@ app.get('/version',function(req,res){
     "version":version
   }
 
-  res.status(200).jsonp(response);connection.close();
+  connection.close();res.status(200).jsonp(response);connection.close();
 });
 
 //
@@ -51,7 +51,7 @@ app.get('/version',function(req,res){
 app.get('/tables',function(req,res){
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
       var query = "";
       query += "DROP TABLE IF EXISTS userComments;";
       query += "";
@@ -162,7 +162,7 @@ app.get('/tables',function(req,res){
             "code":"db_exception",
             "message":"An internal error has occured on our server."
           };
-          res.status(500).jsonp(response);connection.close();
+          connection.close();res.status(500).jsonp(response);connection.close();
           console.log(err);
 
         } else {
@@ -170,7 +170,7 @@ app.get('/tables',function(req,res){
             "code":"Tables created",
             "message":"The tables had been created."
           };
-          res.status(200).jsonp(response);connection.close();
+          connection.close();res.status(200).jsonp(response);connection.close();
         }
       }));
     }
@@ -180,7 +180,7 @@ app.get('/tables',function(req,res){
 app.get('/tables/smsalets/',function(req,res){
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
       var query = "";
       query += "CREATE TABLE smsAlerts";
       query += "(";
@@ -198,7 +198,7 @@ app.get('/tables/smsalets/',function(req,res){
             "code":"db_exception",
             "message":"An internal error has occured on our server."
           };
-          res.status(500).jsonp(response);connection.close();
+          connection.close();res.status(500).jsonp(response);connection.close();
           console.log(err);
 
         } else {
@@ -206,7 +206,7 @@ app.get('/tables/smsalets/',function(req,res){
             "code":"Tables created",
             "message":"The tables had been created."
           };
-          res.status(200).jsonp(response);connection.close();
+          connection.close();res.status(200).jsonp(response);connection.close();
         }
       }));
     }
@@ -216,7 +216,7 @@ app.get('/tables/smsalets/',function(req,res){
 app.get('/tables/smsalets/data',function(req,res){
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
       var query = "";
       query += "INSERT INTO smsAlerts (phone,created) VALUES ('0034000000002',10000,10010);";
 
@@ -228,7 +228,7 @@ app.get('/tables/smsalets/data',function(req,res){
             "code":"db_exception",
             "message":"An internal error has occured on our server."
           };
-          res.status(500).jsonp(response);connection.close();
+          connection.close();res.status(500).jsonp(response);connection.close();
           console.log(err);
 
         } else {
@@ -236,7 +236,7 @@ app.get('/tables/smsalets/data',function(req,res){
             "code":"Tables created",
             "message":"The tables had been created."
           };
-          res.status(200).jsonp(response);connection.close();
+          connection.close();res.status(200).jsonp(response);connection.close();
         }
       }));
     }
@@ -262,7 +262,7 @@ app.get('/admins/:adminApiKey/users',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       checkAdminApi(connection,req,res,function(err,adminKey){
         if(!err){
@@ -276,7 +276,7 @@ app.get('/admins/:adminApiKey/users',function(req,res){
                   "code":"db_exception",
                   "message":"An internal error has occured on our server."
                 };
-                res.status(500).jsonp(response);connection.close();
+                connection.close();res.status(500).jsonp(response);connection.close();
                 console.log("[Admin - List Users] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
@@ -285,7 +285,7 @@ app.get('/admins/:adminApiKey/users',function(req,res){
                 };
 
                 console.log("[Admin - List Users] Success");
-                res.status(200).jsonp(response);connection.close();
+                connection.close();res.status(200).jsonp(response);connection.close();
               }
             })
             .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -313,7 +313,7 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       checkAdminApi(connection,req,res,function(err,adminKey){
         if(!err){
@@ -341,7 +341,7 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
                   "code":"db_exception",
                   "message":"An internal error has occured on our server."
                 };
-                res.status(500).jsonp(response);connection.close();
+                connection.close();res.status(500).jsonp(response);connection.close();
                 console.log("[Admin - List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
@@ -350,7 +350,7 @@ app.get('/admins/:adminApiKey/users/contacts',function(req,res){
                 };
 
                 console.log("[Admin - List User Contacts] Success");
-                res.status(200).jsonp(response);connection.close();
+                connection.close();res.status(200).jsonp(response);connection.close();
               }
             })
             .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -377,7 +377,7 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
 
       checkAdminApi(connection,req,res,function(err,adminKey){
@@ -392,7 +392,7 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
                   "code":"db_exception",
                   "message":"An internal error has occured on our server."
                 };
-                res.status(500).jsonp(response);connection.close();
+                connection.close();res.status(500).jsonp(response);connection.close();
                 console.log("[Admin - List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
@@ -401,7 +401,7 @@ app.get('/admins/:adminApiKey/users/comments',function(req,res){
                 };
 
                 console.log("[Admin - List User Comments] Success");
-                res.status(200).jsonp(response);connection.close();
+                connection.close();res.status(200).jsonp(response);connection.close();
               }
             })
             .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -430,7 +430,7 @@ app.get('/admins/:adminApiKey/log',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
 
       checkAdminApi(connection,req,res,function(err,adminKey){
@@ -445,7 +445,7 @@ app.get('/admins/:adminApiKey/log',function(req,res){
                   "code":"db_exception",
                   "message":"An internal error has occured on our server."
                 };
-                res.status(500).jsonp(response);connection.close();
+                connection.close();res.status(500).jsonp(response);connection.close();
                 console.log("[Admin - List Log] Error "+response.code+" "+response.message+" ("+err+")");
 
               }else{
@@ -454,7 +454,7 @@ app.get('/admins/:adminApiKey/log',function(req,res){
                 };
 
                 console.log("[Admin - List Log] Success");
-                res.status(200).jsonp(response);connection.close();
+                connection.close();res.status(200).jsonp(response);connection.close();
               }
             })
             .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -482,7 +482,7 @@ app.get('/stats',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
 
       var query = "";
@@ -621,7 +621,7 @@ app.get('/stats',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -630,7 +630,7 @@ app.get('/stats',function(req,res){
             };
 
             console.log("[Get Stats] Success");
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -654,7 +654,7 @@ app.get('/stats/:timestamp',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");connection.close();}else{
 
 
       var timestamp = req.params.timestamp;
@@ -675,7 +675,7 @@ app.get('/stats/:timestamp',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Get Stats] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -684,7 +684,7 @@ app.get('/stats/:timestamp',function(req,res){
             };
 
             console.log("[Get Stats] Success");
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -715,7 +715,7 @@ app.post('/users',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       if(
         (typeof req.body.deviceKey == 'undefined')||(req.body.deviceKey=='')||
@@ -732,7 +732,7 @@ app.post('/users',function(req,res){
         if((typeof req.body.system == 'undefined')||(req.body.system=='')){response.message+=" system ";}
         if((typeof req.body.version == 'undefined')||(req.body.version=='')){response.message+=" version ";}
         response.message+=")";
-        res.status(400).jsonp(response);connection.close();
+        connection.close();res.status(400).jsonp(response);connection.close();
         console.log("[Signup] Error "+response.code+" "+response.message);
 
       }else{
@@ -763,7 +763,7 @@ app.post('/users',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Signup] Error "+response.code+" "+response.message+" ("+err+")");
 
           } else {
@@ -771,7 +771,7 @@ app.post('/users',function(req,res){
               "user":user
             };
 
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
             console.log("[Signup] Success");
           }
         }));
@@ -796,7 +796,7 @@ app.put('/users/:userKey/login',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','login',"+timestamp+");";
@@ -809,7 +809,7 @@ app.put('/users/:userKey/login',function(req,res){
             "code":"db_exception",
             "message":"An internal error has occured on our server."
           };
-          res.status(500).jsonp(response);connection.close();
+          connection.close();res.status(500).jsonp(response);connection.close();
           console.log("[Login] Error "+response.code+" "+response.message+" ("+err+")");
 
         } else {
@@ -819,7 +819,7 @@ app.put('/users/:userKey/login',function(req,res){
               "code":"userkey_not_valid",
               "message":"The userKey is not valid."
             };
-            res.status(400).jsonp(response);connection.close();
+            connection.close();res.status(400).jsonp(response);connection.close();
             console.log("[Login] Error "+response.code+" "+response.message);
 
           }else{
@@ -827,7 +827,7 @@ app.put('/users/:userKey/login',function(req,res){
               "code":"user_logged",
               "message":"The user had been logged."
             };
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
             console.log("[Login] Success");
           }
         }
@@ -851,7 +851,7 @@ app.get('/users/:userKey/account',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getAccount',"+timestamp+");";
@@ -864,7 +864,7 @@ app.get('/users/:userKey/account',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Get Account] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -874,7 +874,7 @@ app.get('/users/:userKey/account',function(req,res){
                 "code":"userkey_not_valid",
                 "message":"The userKey is not valid."
               };
-              res.status(400).jsonp(response);connection.close();
+              connection.close();res.status(400).jsonp(response);connection.close();
               console.log("[Login] Error "+response.code+" "+response.message);
 
             }else{
@@ -883,7 +883,7 @@ app.get('/users/:userKey/account',function(req,res){
               };
 
               console.log("[Get Account] Success");
-              res.status(200).jsonp(response);connection.close();
+              connection.close();res.status(200).jsonp(response);connection.close();
             }
           }
         })
@@ -909,7 +909,7 @@ app.put('/users/:userKey/account',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var user={};
       var query = "";
@@ -966,7 +966,7 @@ app.put('/users/:userKey/account',function(req,res){
                 "code":"db_exception",
                 "message":"An internal error has occured on our server."
               };
-              res.status(500).jsonp(response);connection.close();
+              connection.close();res.status(500).jsonp(response);connection.close();
               console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
             }else{
               if(rowsCount==1){
@@ -974,7 +974,7 @@ app.put('/users/:userKey/account',function(req,res){
                   "code":"userkey_not_valid",
                   "message":"The userKey is not valid our you are Unauthorized."
                 };
-                res.status(400).jsonp(response);connection.close();
+                connection.close();res.status(400).jsonp(response);connection.close();
                 console.log("[Update Account] Error "+response.code+" "+response.message);
 
               }else{
@@ -982,7 +982,7 @@ app.put('/users/:userKey/account',function(req,res){
                   "code":"user_updated",
                   "message":"The user had been updated."
                 };
-                res.status(200).jsonp(response);connection.close();
+                connection.close();res.status(200).jsonp(response);connection.close();
                 console.log("[Update Account] Success");
 
               }
@@ -994,7 +994,7 @@ app.put('/users/:userKey/account',function(req,res){
           "code":"no_data_to_update",
           "message":"There is no data to update."
         };
-        res.status(400).jsonp(response);connection.close();
+        connection.close();res.status(400).jsonp(response);connection.close();
         console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
 
       }
@@ -1019,7 +1019,7 @@ app.delete('/users/:userKey',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteAccount',"+timestamp+");";
@@ -1033,7 +1033,7 @@ app.delete('/users/:userKey',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
           }else{
             if(rowsCount==1){
@@ -1041,14 +1041,14 @@ app.delete('/users/:userKey',function(req,res){
                 "code":"userkey_not_valid",
                 "message":"The userKey is not valid our you are Unauthorized."
               };
-              res.status(400).jsonp(response);connection.close();
+              connection.close();res.status(400).jsonp(response);connection.close();
               console.log("[Delete Account] Error "+response.code+" "+response.message);
             }else{
               var response={
                 "code":"user_deleted",
                 "message":"The user account had been deleted."
               };
-              res.status(200).jsonp(response);connection.close();
+              connection.close();res.status(200).jsonp(response);connection.close();
               console.log("[Delete Account] Success");
 
             }
@@ -1073,7 +1073,7 @@ app.post('/users/:userKey/contacts',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       if(
         (typeof req.body.phone == 'undefined')||(req.body.phone=='')
@@ -1084,7 +1084,7 @@ app.post('/users/:userKey/contacts',function(req,res){
         };
         if((typeof req.body.phone == 'undefined')||(req.body.phone=='')){response.message+=" phone ";}
         response.message+=")";
-        res.status(400).jsonp(response);connection.close();
+        connection.close();res.status(400).jsonp(response);connection.close();
         console.log("[Add User Contact] Error "+response.code+" "+response.message);
 
       }else{
@@ -1111,14 +1111,14 @@ app.post('/users/:userKey/contacts',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Add User Contact] Error "+response.code+" "+response.message+" ("+err+")");
 
           } else {
             var response={
               "contact":contact
             };
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
             console.log("[Add User Contact] Success");
           }
         }));
@@ -1143,7 +1143,7 @@ app.get('/users/:userKey/contacts',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserContacts',"+timestamp+");";
@@ -1159,9 +1159,9 @@ app.get('/users/:userKey/contacts',function(req,res){
       query += " userContacts.phone,";
       query += " userContacts.notify";*/
 
-      query += "SELECT userContacts.*, 0 as rating, 0 as commentsAmount ";
-      query += "FROM userContacts ";
-      query += "WHERE userContacts.userKey='"+req.params.userKey+"' ";
+      query += "SELECT uct.*, (SELECT SUM(ucm.rating) DIV COUNT(ID) FROM userComments as ucm WHERE uct.userKey=ucm.userKey) as rating, (SELECT COUNT(ucm.ID) FROM userComments as ucm WHERE uct.userKey=ucm.userKey) as commentsAmount ";
+      query += "FROM userContacts as uct ";
+      query += "WHERE uct.userKey='"+req.params.userKey+"' ";
 
       var rows=[];
       console.log(query);
@@ -1171,7 +1171,7 @@ app.get('/users/:userKey/contacts',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[List User Contacts] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -1179,7 +1179,7 @@ app.get('/users/:userKey/contacts',function(req,res){
               "contacts":rows
             };
             console.log("[List User Contacts] Success");
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -1202,7 +1202,7 @@ app.delete('/users/:userKey/contacts/',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','deleteUserContacts',"+timestamp+");";
@@ -1215,7 +1215,7 @@ app.delete('/users/:userKey/contacts/',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
           }else{
             if(rowsCount==1){
@@ -1223,14 +1223,14 @@ app.delete('/users/:userKey/contacts/',function(req,res){
                 "code":"userkey_not_valid_or_not_contacts",
                 "message":"The userKey is not valid our you there is not contacts."
               };
-              res.status(400).jsonp(response);connection.close();
+              connection.close();res.status(400).jsonp(response);connection.close();
               console.log("[Delete Account] Error "+response.code+" "+response.message);
             }else{
               var response={
                 "code":"contacts_deleted",
                 "message":"The contacts had been deleted."
               };
-              res.status(200).jsonp(response);connection.close();
+              connection.close();res.status(200).jsonp(response);connection.close();
               console.log("[Delete Account] Success");
 
             }
@@ -1254,7 +1254,7 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getUserContact',"+timestamp+");";
@@ -1284,7 +1284,7 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Get User Contact] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -1292,7 +1292,7 @@ app.get('/users/:userKey/contacts/:phone',function(req,res){
               "contact":rows[0]
             };
             console.log("[Get User Contact] Success");
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -1318,7 +1318,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var contact={};
       var query = "";
@@ -1350,7 +1350,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
                 "code":"db_exception",
                 "message":"An internal error has occured on our server."
               };
-              res.status(500).jsonp(response);connection.close();
+              connection.close();res.status(500).jsonp(response);connection.close();
               console.log("[Update Contact] Error "+response.code+" "+response.message+" ("+err+")");
             }else{
               if(rowsCount==1){
@@ -1358,7 +1358,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
                   "code":"userkey_or_phone_not_valid",
                   "message":"The userKey or phone is not valid our you are Unauthorized."
                 };
-                res.status(400).jsonp(response);connection.close();
+                connection.close();res.status(400).jsonp(response);connection.close();
                 console.log("[Update Contact] Error "+response.code+" "+response.message);
 
               }else{
@@ -1366,7 +1366,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
                   "code":"contact_updated",
                   "message":"The contact had been updated."
                 };
-                res.status(200).jsonp(response);connection.close();
+                connection.close();res.status(200).jsonp(response);connection.close();
                 console.log("[Update Contact] Success");
 
               }
@@ -1378,7 +1378,7 @@ app.put('/users/:userKey/contacts/:phone',function(req,res){
           "code":"no_data_to_update",
           "message":"There is no data to update."
         };
-        res.status(400).jsonp(response);connection.close();
+        connection.close();res.status(400).jsonp(response);connection.close();
         console.log("[Update Account] Error "+response.code+" "+response.message+" ("+err+")");
 
       }
@@ -1403,7 +1403,7 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
 
       var query = "";
@@ -1417,7 +1417,7 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Delete Account] Error "+response.code+" "+response.message+" ("+err+")");
           }else{
             if(rowsCount==1){
@@ -1425,14 +1425,14 @@ app.delete('/users/:userKey/contacts/:phone',function(req,res){
                 "code":"userkey_or_phone_not_valid",
                 "message":"The userKey or phone is not valid our you are Unauthorized."
               };
-              res.status(400).jsonp(response);connection.close();
+              connection.close();res.status(400).jsonp(response);connection.close();
               console.log("[Delete Account] Error "+response.code+" "+response.message);
             }else{
               var response={
                 "code":"contact_deleted",
                 "message":"The contact account had been deleted."
               };
-              res.status(200).jsonp(response);connection.close();
+              connection.close();res.status(200).jsonp(response);connection.close();
               console.log("[Delete Account] Success");
 
             }
@@ -1459,7 +1459,7 @@ app.get('/users/:userKey/comments',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
@@ -1484,7 +1484,7 @@ app.get('/users/:userKey/comments',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[List Contacts Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -1498,7 +1498,7 @@ app.get('/users/:userKey/comments',function(req,res){
               response.comments.push(comment);
             });
             console.log("[List Contacts Comments] Success");
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -1523,12 +1523,12 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','listUserComments',"+timestamp+");";
-      query += "SELECT * FROM userComments WHERE phone='"+req.params.phone+"' ORDER BY created DESC";
+      query += "SELECT ucm.*, uct.fullName FROM userComments as ucm, userContacts as uct WHERE ucm.phone='"+req.params.phone+"' AND ucm.userKey = uct.userKey ORDER BY created DESC";
 
       if(!((typeof req.query.limit == 'undefined')||(req.query.limit==''))){
         limit=req.query.limit;
@@ -1547,7 +1547,7 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[List User Comments] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -1561,7 +1561,7 @@ app.get('/users/:userKey/contacts/:phone/comments',function(req,res){
               response.comments.push(comment);
             });
             console.log("[List User Comments] Success");
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
           }
         })
         .on('row', function(columns) {var row={};columns.forEach(function(column) {row[column.metadata.colName]=column.value;});rows.push(row);})
@@ -1587,7 +1587,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       if(
         (typeof req.body.rating == 'undefined')||(req.body.rating=='')||
@@ -1600,7 +1600,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
         if((typeof req.body.rating == 'undefined')||(req.body.rating=='')){response.message+=" rating ";}
         if((typeof req.body.content == 'undefined')||(req.body.content=='')){response.message+=" content ";}
         response.message+=")";
-        res.status(400).jsonp(response);connection.close();
+        connection.close();res.status(400).jsonp(response);connection.close();
         console.log("[Add Comment] Error "+response.code+" "+response.message);
 
       }else{
@@ -1630,7 +1630,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Add Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
           } else {
@@ -1655,7 +1655,7 @@ app.post('/users/:userKey/contacts/:phone/comments',function(req,res){
             });
             */
 
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
             console.log("[Add Comment] Success");
           }
         }));
@@ -1681,7 +1681,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','getUserComments',"+timestamp+");";
@@ -1694,7 +1694,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
               "code":"db_exception",
               "message":"An internal error has occured on our server."
             };
-            res.status(500).jsonp(response);connection.close();
+            connection.close();res.status(500).jsonp(response);connection.close();
             console.log("[Get User Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
           }else{
@@ -1703,7 +1703,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
                 "code":"commentkey_or_phone_not_valid",
                 "message":"The commentKey or phone is not valid."
               };
-              res.status(400).jsonp(response);connection.close();
+              connection.close();res.status(400).jsonp(response);connection.close();
               console.log("[Report Comment] Error "+response.code+" "+response.message);
 
             }else{
@@ -1717,7 +1717,7 @@ app.get('/users/:userKey/contacts/:phone/comments/:commentKey',function(req,res)
               response.comment.push(comment);
 
               console.log("[Get User Comment] Success");
-              res.status(200).jsonp(response);connection.close();
+              connection.close();res.status(200).jsonp(response);connection.close();
             }
           }
         })
@@ -1742,7 +1742,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
 
   var connection = new Connection(sqlconfig);
   connection.on('connect', function(err) {
-    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};res.status(500).jsonp(response);connection.close();}else{
+    if(err){var response={"code":"db_exception","message":"An internal error has occured on our server."};connection.close();res.status(500).jsonp(response);connection.close();}else{
 
       var query = "";
       query += "INSERT INTO log (userKey,action,created) VALUES ('"+req.params.userKey+"','reportUserComment',"+timestamp+");";
@@ -1755,7 +1755,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
             "code":"db_exception",
             "message":"An internal error has occured on our server."
           };
-          res.status(500).jsonp(response);connection.close();
+          connection.close();res.status(500).jsonp(response);connection.close();
           console.log("[Report Comment] Error "+response.code+" "+response.message+" ("+err+")");
 
         } else {
@@ -1765,7 +1765,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
               "code":"commentkey_or_phone_not_valid",
               "message":"The commentKey or phone is not valid."
             };
-            res.status(400).jsonp(response);connection.close();
+            connection.close();res.status(400).jsonp(response);connection.close();
             console.log("[Report Comment] Error "+response.code+" "+response.message);
 
           }else{
@@ -1773,7 +1773,7 @@ app.put('/users/:userKey/contacts/:phone/comments/:commentKey/report',function(r
               "code":"comment_reported",
               "message":"The comment had been reported."
             };
-            res.status(200).jsonp(response);connection.close();
+            connection.close();res.status(200).jsonp(response);connection.close();
             console.log("[Report Comment] Success");
           }
         }
@@ -1815,7 +1815,7 @@ function checkAdminApi(connection,req,res,callback){
   var timestamp = new Date().getTime();timestamp = Math.floor(timestamp / 1000);
 
   if((typeof req.params.adminApiKey == 'undefined')||(req.params.adminApiKey=='')){
-    var response={"code":"missing_adminapikey","message":"You didn't provide an apiKey."};res.status(400).jsonp(response);connection.close();
+    var response={"code":"missing_adminapikey","message":"You didn't provide an apiKey."};connection.close();res.status(400).jsonp(response);connection.close();
     console.log("missing_adminapikey");
     callback(true);
   }else{
@@ -1825,13 +1825,13 @@ function checkAdminApi(connection,req,res,callback){
     connection.execSql(new Request(apicheck_query, function(apicheck_err,apicheck_rowsCount) {
       if (apicheck_err) {
         var response={"code":"db_exception","message":"An internal error has occured on our server."};
-        res.status(500).jsonp(response);connection.close();
+        connection.close();res.status(500).jsonp(response);connection.close();
         console.log("db_exception");
         callback(true);
       }else{
         if(apicheck_rowsCount==0){
           var response={"code":"adminapiket_not_valid","message":"The adminApiKey you entered is not valid."};
-          res.status(401).jsonp(response);connection.close();
+          connection.close();res.status(401).jsonp(response);connection.close();
           console.log("adminapiket_not_valid");
           callback(true);
         }else{
